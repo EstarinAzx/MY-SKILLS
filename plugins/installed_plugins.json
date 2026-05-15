@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "plugins": {
+    "codex@openai-codex": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\S.D\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4",
+        "version": "1.0.4",
+        "installedAt": "2026-05-06T13:23:35.473Z",
+        "lastUpdated": "2026-05-06T13:23:35.473Z",
+        "gitCommitSha": "807e03ac9d5aa23bc395fdec8c3767500a86b3cf"
+      }
+    ],
+    "caveman@caveman": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\S.D\\.claude\\plugins\\cache\\caveman\\caveman\\63a91ecadbf4",
+        "version": "63a91ecadbf4",
+        "installedAt": "2026-05-14T02:02:50.779Z",
+        "lastUpdated": "2026-05-14T02:02:50.779Z",
+        "gitCommitSha": "63a91ecadbf4c4719a4602a5abb00883f9966034"
+      }
+    ]
+  }
+}
