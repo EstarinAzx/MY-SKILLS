@@ -7,7 +7,8 @@ Bootstrap `.context/` for a fresh project. Run once. After this, use `update`.
 ### 1. Check existing state
 
 - If `.context/` already exists, ask the user: abort, overwrite, or run `update` instead. Do not proceed without an answer.
-- Scan the project root for **existing canonical context docs**: `CONTEXT.md`, `ARCHITECTURE.md`, `<PROJECT>_CONTEXT.md`, a heavy `README.md`, or `docs/overview.md`. If found, ask the user: **absorb** (fold the content into `.context/` files), **reference** (link from `overview.md` and treat as authoritative), or **ignore**. Default to absorb when the doc looks comprehensive.
+- Scan the project root for **existing canonical context docs**: `ARCHITECTURE.md`, `<PROJECT>_CONTEXT.md`, a heavy `README.md`, or `docs/overview.md`. If found, ask the user: **absorb** (fold the content into `.context/` files), **reference** (link from `overview.md` and treat as authoritative), or **ignore**. Default to absorb when the doc looks comprehensive.
+- Scan for a **living glossary** — `CONTEXT.md` or `UBIQUITOUS_LANGUAGE.md`, the domain ubiquitous-language file maintained by `/grill-with-docs`. If found, treat it as **reference-only and authoritative — never absorb it**. Another skill continuously refines it; copying its content into `.context/` forks the glossary and guarantees drift. Link it from `overview.md` as the domain-language source. Same rule for `docs/adr/`: it is the authoritative decisions store — `.context/decisions.md` points to it, never duplicates it.
 - Detect the user's preferred mode for `.context/` itself: check `.gitignore` for `.context/`. If gitignored, you're in local mode (terse shorthand fine). Otherwise, committed mode (write for a stranger). When ambiguous, ask.
 
 ### 2. Explore the codebase
@@ -72,4 +73,4 @@ Report to the user:
 - Do not invent surface area you can't grep for. Mark uncertain content `(needs review)` and ask.
 - Reference paths instead of pasting code. `auth middleware at src/middleware/auth.ts` beats a 30-line code dump.
 - Short and accurate beats padded to a line target.
-- If you absorbed an existing context doc in step 1, make `.context/` standalone afterward — don't leave dangling "see CONTEXT.md" references that defeat the point.
+- If you absorbed an existing context doc in step 1, make `.context/` standalone afterward — don't leave dangling "see that doc" references that defeat the point. Exception: a living glossary (`CONTEXT.md` / `UBIQUITOUS_LANGUAGE.md`) and `docs/adr/` are deliberately referenced, not absorbed — those links are intended and must stay.

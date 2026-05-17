@@ -35,6 +35,12 @@ _At commit: <short SHA, or "uncommitted">_
 - "Run `npm test cart` — three tests fail; fix in order."
 - If nothing is in flight, write: "No active work — pick a new task.">
 
+## Skills for next session
+<Slash-skills the next agent should load for the work in flight, one per line with a one-line why. Empty if none clearly apply.
+- /tdd — the failing tests need a red-green-refactor loop
+- /grill-me — the plan in flight is still unresolved
+Name only skills that match the work; do not guess.>
+
 ## Open questions
 <Questions the user needs to answer before progress unblocks. One per line. Empty if none.>
 

@@ -1,6 +1,6 @@
 ---
 name: context-sync
-description: Maintain a project-local `.context/` directory that hands off state between conversations — `init` bootstraps it, `update` refreshes it at session end so a fresh agent can pick up without re-reading the chat. Files are Obsidian-compatible (frontmatter + wikilinks) so `.context/` renders as a project-context graph. Use when the user wants to set up project handoff context, snapshot session state for the next agent, or sync .context/ files after a work session.
+description: Maintain a project-local `.context/` directory that hands off state between conversations — `init` bootstraps it, `update` refreshes it at any context-switch (session end, or before forking work) so a fresh agent can pick up without re-reading the chat. Files are Obsidian-compatible (frontmatter + wikilinks) so `.context/` renders as a project-context graph. Use when the user wants to set up project handoff context, snapshot session state for the next agent, or sync .context/ files after a work session.
 ---
 
 # context-sync
@@ -14,7 +14,7 @@ This is a **handoff system**, not a knowledge wiki. For compounding cross-sessio
 ## Two modes
 
 - **`init`** — bootstrap `.context/` in a project. Run once. See [INIT.md](INIT.md).
-- **`update`** — refresh `.context/` at the end of a work session. See [UPDATE.md](UPDATE.md).
+- **`update`** — refresh `.context/` at any context-switch: session end, or before forking work to a different task or session. See [UPDATE.md](UPDATE.md).
 
 ## Routing
 
@@ -86,6 +86,7 @@ For task-scoped work, add the relevant slice (e.g. `.context/frontend.md` for UI
 - `.context/` is **project-local**. Do not put personal preferences here — those belong in user-level memory.
 - `.context/` is intended to be committed to git. That's how it travels between machines and sessions.
 - If `docs/adr/` exists, `decisions.md` should point to ADRs rather than duplicate them.
+- If a `CONTEXT.md` ubiquitous-language glossary exists (maintained by `/grill-with-docs`), it is the authoritative domain-language source. `.context/` references it from `overview.md` — never absorbs it, never redefines its terms. It is a living doc; a copy would drift.
 - Never write code, secrets, or large data dumps into `.context/`. It's a map, not the territory.
 - **No hooks.** This skill never modifies `~/.claude/settings.json`. All operations are user-triggered.
 - For compounding knowledge across sessions, use `kb`. This skill stays focused on handoff.

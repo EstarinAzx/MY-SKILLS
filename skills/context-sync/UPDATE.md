@@ -1,6 +1,6 @@
 # context-sync update
 
-Refresh `.context/` at the end of a work session. Designed to leave a clean handoff for the next agent in a new conversation.
+Refresh `.context/` at any context-switch — end of a work session, or before forking the work to a different task or session. Designed to leave a clean handoff for the next agent in a new conversation.
 
 ## Process
 
@@ -82,3 +82,4 @@ If you guessed at anything ambiguous, flag it so the user can correct before the
 - `active-work.md` is current state, not a chat log. No "we discussed X then Y."
 - Don't move information into `.context/` that already lives in committed code or commit messages.
 - Don't update structural files just because tokens were spent in their area.
+- Don't define domain terms in `.context/`. If a `CONTEXT.md` glossary exists, it owns the ubiquitous language — reference it, never copy term definitions. A term sharpened this session belongs in `CONTEXT.md` (via `/grill-with-docs`), not in a `.context/` file.
