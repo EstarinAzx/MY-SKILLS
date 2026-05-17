@@ -65,10 +65,17 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-## 5. Readable Code
+## 5. Skeleton Comment Sync
 
-**Write code the next reader understands without running it.** Applies to code you write or are explicitly asked to clean up — not as a license for drive-by edits (§3 still holds). For a dedicated cleanup pass, the `/chunk-it` skill has the full details. 
+**Comment and code are peers. Edit them together.**
 
----
+Skeleton files (from `/skeleton` or `/skeleton-verbose`) carry inline plain-English plan comments: a file-top block, per-construct summary comments, and `-` dash step comments above logic blocks.
 
-**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, clarifying questions come before implementation rather than after mistakes, and past decisions aren't re-debated.
+When you edit code in such a file:
+
+- Update the matching summary or step comment in the SAME edit.
+- Never leave a comment describing code that no longer exists.
+- If a change makes a comment wrong, fix the comment - don't silently diverge.
+
+The test: after any edit, every comment still truthfully describes the code below it.
+
