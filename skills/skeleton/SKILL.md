@@ -1,30 +1,22 @@
 ---
 name: skeleton
-description: Plan code as plain-English logic blueprints before writing real code. AI drafts one .md per source file under blueprints/, mirroring the src tree. Each blueprint reads like prose ("If... then...", "Loop through...", "Send back..."). User approves blueprints batch, then code lands per-file with separate approval each. Source-of-truth: blueprint updates before code. Use when user runs /skeleton, says "blueprint this", "skeleton first", "plan in prose before coding", or wants logic written in English before syntax.
+description: Plan code as plain-English logic steps written as comments INSIDE the source file, before any code. AI drafts each file as a comment-only skeleton (file purpose, deps, data shapes, per-function summary, numbered steps), user approves the batch, then code is filled in under each comment. Comments stay permanently — comment and code are peers. Use when user runs /skeleton, says "blueprint this", "skeleton first", "plan in prose before coding", or wants logic written in English before syntax.
 ---
 
 # Skeleton
 
-Write the logic in plain English first. Code second. Blueprints are the source of truth — code is one valid rendering of them.
+Write the logic in plain English first, as comments inside the real source file. Code second, filled in directly under each comment.
 
-This skill is **not** docstrings, **not** code comments, **not** a README. It is a parallel `.md` tree under `blueprints/` that mirrors your source tree, where each file describes its sibling code file's behavior as numbered English steps.
+There is **no separate blueprint tree**. The English plan lives inline in the code file. Comment and code are **peers** — written together, edited together, neither outranks the other. The comments are permanent inline documentation, not scaffolding to delete.
 
 ## When to invoke
 
-User runs:
-- `/skeleton <natural language task>` — forward mode. AI plans files, drafts blueprints, asks approval, writes code per-file with approval gates.
-- `/skeleton backfill <path-or-glob>` — reverse mode. AI reads existing code, generates blueprint(s), user fixes/approves. No code changes.
+- `/skeleton <natural language task>` — forward mode. AI plans files, writes comment-only skeletons, asks one approval, then fills code per file with approval gates.
+- `/skeleton backfill <path-or-glob>` — reverse mode. AI reads existing code and inserts step comments into those files in place. Comments-only edit, no logic change.
 
 Skill is **manual only**. Do not auto-trigger on every Write/Edit.
 
-## Layout
-
-- All blueprints live at `blueprints/` at repo root.
-- Mirror the source tree exactly. `src/auth/login.ts` → `blueprints/auth/login.md`. `test/auth/login.test.ts` → `blueprints/test/auth/login.test.md`.
-- One blueprint per code file. Always `.md`.
-- File extension on source dropped, replaced with `.md`. Path segments below `src/` (or repo root if no `src/`) are preserved.
-
-### What files get blueprints
+## What files get skeletoned
 
 Logic-bearing source only:
 
@@ -34,67 +26,78 @@ Logic-bearing source only:
 
 Skip: `.md .txt .json .yaml .yml .toml .ini .css .scss .html .svg .sql .csv .lock .gitignore`, dotfiles, configs, fixtures, generated code, vendored deps.
 
-## Blueprint file format
+## File structure
 
-```markdown
----
-code_file: src/auth/login.ts
-last_synced: 2026-05-16
-status: draft
----
+Every skeletoned file has two comment layers:
 
-## Depends on
-- express (web framework)
-- bcrypt (password hashing)
-- [users db module](../db/users.md)
+### 1. File-top comment block
 
-## Data shapes
+A block comment at the top of the file containing, in order:
 
-User has: id (number), email (string), passwordHash (string), createdAt (date).
+- **One-line file purpose.**
+- **Depends on** — external libs (each with a one-line role) and internal modules.
+- **Data shapes** — types described in prose. Skip if the file has none.
 
-LoginResult has: token (string) and expiresAt (date).
+Use the language's block-comment syntax (`/* */`, `"""..."""`, `#` stack — whatever is idiomatic).
 
-## function login(email, password)
+### 2. Per-construct comments
 
-1. Look up user by email in the users table.
-2. If user is missing, send back 404 "not found".
-3. Otherwise, compare the supplied password to the stored hash using bcrypt.
-4. If the comparison fails, send back 401 "invalid credentials".
-5. Create a new session token tied to the user id.
-6. Store the token in the sessions table with a 24-hour expiry.
-7. Send back a LoginResult containing the token and its expiry.
+For each top-level function or class, in source order:
 
-## function logout(token)
+- **A one-line summary comment** directly above the construct — what it does, in plain English.
+- **Step comments** inside the body — one `-` dash comment per logical block. Code is filled in directly under each. No numbering — inserting or removing a step never forces a renumber.
 
-1. Look up the session by token.
-2. If not found, send back 204 (idempotent).
-3. Otherwise, delete the session row.
-4. Send back 204.
+If a file has no functions/classes (a module-level script), give it a single summary comment then step comments.
+
+## The two phases
+
+### Phase 1 — comment-only skeleton (written to disk)
+
+Each planned file is written to disk as a **parseable comment-only skeleton**: file-top block, function signatures, summary comments, and dash step comments stacked inside each body. Add the minimum stub body the language needs to parse (`pass` in Python, `throw new Error("not implemented")` / `return undefined` in TS/JS, `panic!()` in Rust, etc.). JS/Go bodies of only comments already parse — no stub needed.
+
+Skeleton phase of `src/auth/login.ts`:
+
+```ts
+/*
+ * login.ts — user authentication: sign in and sign out.
+ *
+ * Depends on:
+ *   - bcrypt (password hashing)
+ *   - ../db/users (users + sessions table access)
+ *
+ * Data shapes:
+ *   User has: id (number), email (string), passwordHash (string), createdAt (date).
+ *   LoginResult has: token (string) and expiresAt (date).
+ */
+
+// Sign a user in: verify credentials, issue a session token.
+async function login(email: string, password: string): Promise<LoginResult> {
+  // - Look up the user by email in the users table.
+  // - If the user is missing, send back 404 "not found".
+  // - Compare the supplied password to the stored hash using bcrypt.
+  // - If the comparison fails, send back 401 "invalid credentials".
+  // - Create a new session token tied to the user id.
+  // - Store the token in the sessions table with a 24-hour expiry.
+  // - Send back a LoginResult containing the token and its expiry.
+  throw new Error("not implemented");
+}
+
+// Sign a user out: drop the session. Idempotent.
+async function logout(token: string): Promise<void> {
+  // - Look up the session by token.
+  // - If not found, stop (idempotent).
+  // - Otherwise, delete the session row.
+  throw new Error("not implemented");
+}
 ```
 
-### Frontmatter fields
+### Phase 2 — fill code
 
-- `code_file` — relative path from repo root to the source file this blueprint describes.
-- `last_synced` — ISO date (YYYY-MM-DD) when blueprint and code were last known in sync.
-- `status` — one of:
-  - `draft` — AI wrote it, awaiting user approval
-  - `approved` — user approved, code currently being written
-  - `synced` — code matches blueprint
-  - `stale` — code edited after blueprint last_synced (set by `/skeleton-check`)
-
-### Section order (always)
-
-1. Frontmatter
-2. `## Depends on` — bullet list. External libs noted with one-line role. Internal references use markdown links to the other blueprint (`[name](relative/path.md)`).
-3. `## Data shapes` — types in prose. "User has: id (number), email (string)...". Skip if file has none.
-4. One `## function <name>(<args>)` or `## class <Name>` section per top-level construct, in source order.
-5. Numbered steps inside each section. One step per logical block.
-
-If file has no functions/classes (e.g. a module-level script), use `## main` as the single section.
+Real code is filled in directly under each dash step comment, 1:1. The stub body is removed. The file-top block, summary comments, and step comments all stay permanently. See `example/login.ts` for the filled result.
 
 ## Phrasing guidelines
 
-Write English a smart non-programmer could read. Use these natural patterns:
+Write English a smart non-programmer could read. Natural patterns:
 
 | Code concept              | English phrasing                                    |
 |---------------------------|-----------------------------------------------------|
@@ -112,58 +115,37 @@ Write English a smart non-programmer could read. Use these natural patterns:
 | `async / await`           | "Wait for ... before continuing"                    |
 | Early return / guard      | "First check ... if so, send back ... and stop."    |
 
-Granularity: **logical block, not line-by-line**. One numbered step per if-branch, loop, try-block, or short sequence of related assignments. Variable bookkeeping is grouped, not split per line.
-
-These are guidelines not gates. Use natural prose. Don't twist sentences to hit exact keywords. The point is readability.
+Granularity: **logical block, not line-by-line**. One dash step per if-branch, loop, try-block, or short sequence of related assignments. Group variable bookkeeping, don't split per line. Guidelines, not gates — use natural prose.
 
 ## Workflow: forward mode (`/skeleton <task>`)
 
-1. **Plan files.** From the task description, list every code file you will create or modify. Group into a plan.
-2. **Reverse-engineer existing files.** For any file in the plan that already exists and lacks a blueprint, write its current-state blueprint first (silently) so the diff makes sense.
-3. **Write blueprints.** Create one `.md` per code file under `blueprints/` mirroring the planned path. Frontmatter `status: draft`. Use markdown links to other blueprints in the batch under `## Depends on`.
-4. **Batch approve.** Present the full set in chat. List paths created + a one-line summary each. Ask the user to approve, reject, or describe edits.
-   - If user describes edits: rewrite affected blueprints, re-ask.
-   - If user edits `.md` files directly: re-read and proceed.
-   - On approval: bump all status to `approved`, set `last_synced` to today.
-5. **Write code per file, gated.** For each file in the approved batch, write the code, then pause and ask user to approve that specific file's code before moving to the next. After approval of each file, set its blueprint `status: synced` and update `last_synced`.
-6. **Mid-code discrepancy.** If while writing code you realize the blueprint is wrong, stop, update the blueprint, re-ask approval for that one file. Do not silently diverge.
+1. **Plan files.** From the task, list every code file you will create or modify. Group into a plan.
+2. **Write skeletons for all files.** Write each planned file to disk as a Phase 1 comment-only skeleton.
+3. **One batch approval.** Present the full set in chat: paths written + a one-line summary each. Ask the user to approve, reject, or describe edits.
+   - If user describes edits: rewrite affected skeletons, re-ask.
+   - If user edits files directly: re-read and proceed.
+4. **Fill code per file, gated.** For each approved file, fill the code under every comment, then pause and ask the user to approve that file's code before the next.
+5. **Mid-code discrepancy.** If while filling code you realize a comment is wrong, fix the comment in the same edit and note it when you ask approval. Do not silently diverge.
 
 ## Workflow: backfill mode (`/skeleton backfill <path-or-glob>`)
 
 1. Resolve target files. Skip non-logic-bearing extensions (see allowlist above).
-2. For each target, read the code, generate a blueprint at the mirrored `blueprints/` path with `status: draft`.
-3. After writing all, present the list and ask user to review/edit/approve.
-4. On approval, bump status to `synced` and set `last_synced` to today.
-5. No code is touched in backfill mode.
+2. For each target, read the code and insert the file-top block, per-construct summary comments, and dash step comments in place. Comments only — no logic change.
+3. After writing all, present the list and ask the user to review/edit/approve.
 
 ## Sync rule
 
-Blueprint is the source of truth. **Always update the blueprint before the code.**
-
-When the user asks for a code change to a file that has a blueprint:
-1. Update the blueprint first.
-2. Bump `last_synced` and set `status: approved`.
-3. Ask the user to approve the blueprint change.
-4. Then make the code change.
-5. Set `status: synced` after.
-
-If user insists on a quick code-only edit (typo, rename), still update the blueprint after — never leave it stale silently. Set `status: synced` and bump `last_synced`.
-
-## Cross-file references
-
-Inside `## Depends on`, link to other blueprints with relative markdown links: `[validateToken](../auth/token.md#function-validatetoken)`.
-
-Inside numbered steps, refer to functions by name only. The dependency list at top establishes the resolved targets. Don't inline long paths in the middle of prose.
+Comment and code are peers. When a later code change touches a skeletoned file, **update the matching comment in the same edit** — summary and step comments stay true to the code. No separate approval gate for routine edits; they change as one unit. Never leave a comment describing code that no longer exists.
 
 ## What this skill does NOT do
 
-- Does not write code comments or docstrings — those go in the code, this skill writes a parallel doc tree.
+- Does not create a separate `blueprints/` tree — the plan lives inline in the source file.
 - Does not auto-trigger on every Write/Edit. Manual only.
-- Does not blueprint configs, markup, styles, or data files.
-- Does not skip the approval gate. The whole point is human review of logic before syntax.
-- Does not silently diverge — if reality requires a change, update the blueprint first.
+- Does not skeleton configs, markup, styles, or data files.
+- Does not skip the Phase 1 approval gate — human review of logic before syntax is the point.
+- Does not delete the comments after code lands — they are permanent documentation.
+- Does not silently diverge — if reality requires a change, fix the comment with the code.
 
 ## See also
 
-- `/skeleton-check` — drift detector. Walks `blueprints/`, compares `code_file` mtime vs blueprint mtime, prints a table of file / status / last_synced / drift_reason.
-- `example/login.md` — full reference blueprint shipped with this skill.
+- `example/login.ts` — full reference file showing the filled (Phase 2) result.
