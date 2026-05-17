@@ -1,13 +1,13 @@
 ---
 name: skeleton
-description: Plan code as plain-English logic steps written as comments INSIDE the source file, before any code. AI drafts each file as a comment-only skeleton (file purpose, deps, data shapes, per-function summary, numbered steps), user approves the batch, then code is filled in under each comment. Comments stay permanently — comment and code are peers. Use when user runs /skeleton, says "blueprint this", "skeleton first", "plan in prose before coding", or wants logic written in English before syntax.
+description: Plan code as plain-English logic steps written as comments INSIDE the source file, before any code. AI drafts each file as a comment-only skeleton (file purpose, deps, data shapes, per-function summary, numbered steps), user approves the batch, then code is filled in under each comment. After fill, step comments that merely restate the code are pruned; the file-top block and summary comments stay as permanent docs. Use when user runs /skeleton, says "blueprint this", "skeleton first", "plan in prose before coding", or wants logic written in English before syntax. For the learning-mode variant that keeps every comment, see /skeleton-verbose.
 ---
 
 # Skeleton
 
 Write the logic in plain English first, as comments inside the real source file. Code second, filled in directly under each comment.
 
-There is **no separate blueprint tree**. The English plan lives inline in the code file. Comment and code are **peers** — written together, edited together, neither outranks the other. The comments are permanent inline documentation, not scaffolding to delete.
+There is **no separate blueprint tree**. The English plan lives inline in the code file. Comment and code are **peers** — written together, edited together, neither outranks the other. The file-top block and per-construct summary comments are permanent inline documentation. Step comments that merely echo the code are pruned once code lands (Phase 2); step comments carrying non-obvious intent stay.
 
 ## When to invoke
 
@@ -93,7 +93,19 @@ async function logout(token: string): Promise<void> {
 
 ### Phase 2 — fill code
 
-Real code is filled in directly under each dash step comment, 1:1. The stub body is removed. The file-top block, summary comments, and step comments all stay permanently. See `example/login.ts` for the filled result.
+Real code is filled in directly under each dash step comment, 1:1. The stub body is removed.
+
+Then **prune**. Walk the step comments just written and delete any that only restate self-evident code. Keep:
+
+- the file-top block — always,
+- every per-construct summary comment — always,
+- step comments that carry non-obvious information: *why* a step exists, edge cases, ordering constraints, gotchas, anything the code itself does not say.
+
+Rule of thumb: if deleting a step comment loses nothing a competent reader could not recover from the line below it, delete it. Comment the *why*, not the *what*.
+
+For the learning-mode variant that keeps **every** step comment permanently — training wheels for vibecoders and codebase newcomers — use `/skeleton-verbose`.
+
+`example/login.ts` shows a filled result with all comments kept (the `/skeleton-verbose` style); default `/skeleton` would prune the self-evident ones.
 
 ## Phrasing guidelines
 
@@ -143,9 +155,10 @@ Comment and code are peers. When a later code change touches a skeletoned file, 
 - Does not auto-trigger on every Write/Edit. Manual only.
 - Does not skeleton configs, markup, styles, or data files.
 - Does not skip the Phase 1 approval gate — human review of logic before syntax is the point.
-- Does not delete the comments after code lands — they are permanent documentation.
+- Does not delete the file-top block or summary comments — those are permanent. It prunes only step comments that merely restate the code (Phase 2). To keep every comment, use `/skeleton-verbose`.
 - Does not silently diverge — if reality requires a change, fix the comment with the code.
 
 ## See also
 
+- `/skeleton-verbose` — learning-mode variant; keeps every step comment permanently.
 - `example/login.ts` — full reference file showing the filled (Phase 2) result.
