@@ -8,7 +8,7 @@ When you finish that task:
    - "Go — land it" → proceed to step 2.
    - "Needs changes" (+ Other for notes) → make the fixes, then re-run this gate.
 2. **Context update (conditional).** On "go", if a `.context/` directory exists in the repo, invoke `/context-update`. If there is no `.context/`, invoke `/context-init`.
-3. **Handoff note.** Write/update `.context/pick-up.md` — the focused "resume here" baton that `/preset pick-up` reads next session. Record: what this task finished, the single next task to pick up (issue # or short description), and any landmine to watch. Keep it short; full state already lives in `active-work.md`.
+3. **Handoff note.** Write/update `.context/pick-up.md` — the self-contained baton `/preset pick-up` reads next session. Record: what this task finished, the single next task to pick up + pointers (issue #, files touched), and any landmine — enough that `pick-up` needs nothing else. Keep it short; full state lives in `active-work.md`.
 4. **Commit.** Stage the work (including the updated `.context/`) and commit with a clear conventional-commit message. If on the default branch (main/master), create a branch first per repo rules. Do not push unless asked.
 
 Fire once, then done.
