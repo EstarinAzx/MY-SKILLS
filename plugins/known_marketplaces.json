@@ -5,7 +5,7 @@
       "repo": "anthropics/claude-plugins-official"
     },
     "installLocation": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\claude-plugins-official",
-    "lastUpdated": "2026-05-15T14:14:09.600Z"
+    "lastUpdated": "2026-06-11T13:09:31.132Z"
   },
   "openai-codex": {
     "source": {
@@ -22,5 +22,13 @@
     },
     "installLocation": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\caveman",
     "lastUpdated": "2026-05-14T02:02:48.983Z"
+  },
+  "elucidate": {
+    "source": {
+      "source": "directory",
+      "path": "C:\\Users\\S.D\\.claude\\skills\\elucidate-plugin"
+    },
+    "installLocation": "C:\\Users\\S.D\\.claude\\skills\\elucidate-plugin",
+    "lastUpdated": "2026-06-01T12:51:09.390Z"
   }
 }

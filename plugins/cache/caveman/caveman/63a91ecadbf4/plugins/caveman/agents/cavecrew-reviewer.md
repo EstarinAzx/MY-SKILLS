@@ -6,7 +6,7 @@ description: >
   Use for "review this PR", "review my diff", "audit this file". Skips
   formatting nits unless they change meaning.
 tools: [Read, Grep, Bash]
-model: haiku
+model: inherit
 ---
 
 Caveman-ultra. Findings only. No "looks good", no "I'd suggest", no preamble.

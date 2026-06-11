@@ -1,0 +1,34 @@
+{
+  "claude-plugins-official": {
+    "source": {
+      "source": "github",
+      "repo": "anthropics/claude-plugins-official"
+    },
+    "installLocation": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\claude-plugins-official",
+    "lastUpdated": "2026-06-01T12:29:30.660Z"
+  },
+  "openai-codex": {
+    "source": {
+      "source": "github",
+      "repo": "openai/codex-plugin-cc"
+    },
+    "installLocation": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\openai-codex",
+    "lastUpdated": "2026-05-06T13:23:04.353Z"
+  },
+  "caveman": {
+    "source": {
+      "source": "github",
+      "repo": "JuliusBrussee/caveman"
+    },
+    "installLocation": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\caveman",
+    "lastUpdated": "2026-05-14T02:02:48.983Z"
+  },
+  "skeleton": {
+    "source": {
+      "source": "directory",
+      "path": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\skeleton"
+    },
+    "installLocation": "C:\\Users\\S.D\\.claude\\plugins\\marketplaces\\skeleton",
+    "lastUpdated": "2026-05-20T08:31:05.113Z"
+  }
+}

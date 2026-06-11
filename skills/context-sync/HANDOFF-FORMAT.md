@@ -37,7 +37,7 @@ _At commit: <short SHA, or "uncommitted">_
 
 ## Skills for next session
 <Slash-skills the next agent should load for the work in flight, one per line with a one-line why. Empty if none clearly apply.
-- /tdd — the failing tests need a red-green-refactor loop
+- superpowers:test-driven-development — the failing tests need a red-green-refactor loop
 - /grill-me — the plan in flight is still unresolved
 Name only skills that match the work; do not guess.>
 

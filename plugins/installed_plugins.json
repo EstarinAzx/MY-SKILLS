@@ -20,6 +20,25 @@
         "lastUpdated": "2026-05-14T02:02:50.779Z",
         "gitCommitSha": "63a91ecadbf4c4719a4602a5abb00883f9966034"
       }
+    ],
+    "elucidate-local@elucidate": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\S.D\\.claude\\skills\\elucidate-plugin",
+        "version": "1.0.0",
+        "installedAt": "2026-06-01T12:51:28.404Z",
+        "lastUpdated": "2026-06-01T12:51:28.404Z"
+      }
+    ],
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "user",
+        "installPath": "C:\\Users\\S.D\\.claude\\plugins\\cache\\claude-plugins-official\\superpowers\\5.1.0",
+        "version": "5.1.0",
+        "installedAt": "2026-06-02T09:37:43.400Z",
+        "lastUpdated": "2026-06-02T09:37:43.400Z",
+        "gitCommitSha": "f2cbfbefebbfef77321e4c9abc9e949826bea9d7"
+      }
     ]
   }
 }

@@ -65,17 +65,53 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
-## 5. Skeleton Comment Sync
+## 5. Ecosystem Knowledgebase
 
-**Comment and code are peers. Edit them together.**
+**`~/.claude/ecosystem-kb` is the map of the global Claude setup. Consult it instead of guessing.**
 
-Skeleton files (from `/skeleton` or `/skeleton-verbose`) carry inline plain-English plan comments: a file-top block, per-construct summary comments, and `-` dash step comments above logic blocks.
+It is an /llm-kb wiki vault covering installed plugins, skills, config mechanics, and decision lineups (what was kept, what was deprecated, why). Use it when:
 
-When you edit code in such a file:
+- Asked "what tooling/skills do we have" — answer from the vault, not memory.
+- About to suggest or install a new skill/plugin — a decision page may already cover that niche with a chosen winner.
+- Unsure which skill to route a task to — see `wiki/syntheses/ecosystem-overview.md` (entry point).
 
-- Update the matching summary or step comment in the SAME edit.
-- Never leave a comment describing code that no longer exists.
-- If a change makes a comment wrong, fix the comment - don't silently diverge.
+Query with `/llm-kb query <question>` or read the vault directly. If the ecosystem changes during a session (plugin added/removed, new lineup decision), update the matching wiki page + index + log in the same pass.
 
-The test: after any edit, every comment still truthfully describes the code below it.
+## 6. Session Handoff via .context/
+
+**If `.context/` exists in this repo, it is the cross-session handoff state. Use it.**
+
+- At session start: read `.context/active-work.md` (current state) and skim `.context/overview.md` before diving in.
+- At session end, or before forking to a new line of work: run `/context-update` to refresh active-work.md and append any decisions made.
+- If the project has no `.context/` yet and work will span multiple sessions, suggest `/context-init` once — don't create it unasked.
+
+## 7. Explanation Style for /read-flow
+
+**When /read-flow is invoked, answer in beginner-friendly simplified style.**
+
+Structure the user-facing answer as:
+
+- A handful of short numbered steps in plain everyday English.
+- One analogy if it helps the concept land.
+- File paths only at the end ("the two files that do it").
+- Close with a one-line rule of thumb worth remembering.
+- No jargon unless defined in passing.
+
+Still do the full trace and persist file:line detail to `.context/flows.md` —
+that's the record. The reply leads with the simple version; offer the detailed
+data-journey/failure/gaps breakdown only if asked.
+
+## 8. User Preference
+
+**JavaScript: prefer arrow functions.**
+
+Default to arrow functions (`const fn = () => {}`). Use a regular `function` only
+when arrow semantics break the code:
+
+- Methods/code needing their own `this` (object methods, class prototypes, event
+  handlers relying on `this`).
+- Functions needing `arguments`, `new.target`, or to be used as a constructor.
+- Generators (`function*`) and named hoisted declarations where hoisting matters.
+
+When in doubt, arrow. Switch to `function` only for the cases above.
 

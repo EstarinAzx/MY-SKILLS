@@ -10,3 +10,45 @@ output-skill: Prevents AI from being lazy, skipping code blocks, or using placeh
 minimalist-skill: Enforces clean, editorial-style interfaces (Notion/Linear style) with strict monochrome palettes.
 brutalist-skill: Raw mechanical interfaces, Swiss typography, extreme scale contrast. (Beta)
 stitch-skill: Google Stitch-compatible semantic design rules for premium AI UI generation.
+
+
+Pipeline now clean. Flow depends on what you start with:
+
+1. New build (greenfield page/app UI)
+
+impeccable auto-triggers (its description covers design/redesign/polish/etc). Inside it:
+
+/impeccable teach      → one-time per project: writes PRODUCT.md (+ DESIGN.md)
+/impeccable shape X    → UX plan + design brief, you approve brief
+/impeccable craft X    → builds feature end-to-end (runs shape first if no brief)
+
+Gates matter: craft refuses to touch files until PRODUCT.md exists and you've confirmed shape brief. First run on fresh project always detours through teach. After context exists, plain /impeccable <anything> works without ceremony.
+
+Then refine passes as needed: critique, audit, polish, bolder, quieter, animate, typeset, layout. live = pick elements in browser, generate variants.
+
+2. Existing project that looks AI-generic
+
+redesign-skill. No setup, no PRODUCT.md. Scan → diagnose against its checklist → targeted fixes in priority order (font swap → color → hover states → layout → components → states → typography polish). Use when you want fast facelift without impeccable's process.
+
+Overlap note: impeccable critique/audit also review existing UI — but they score and report; redesign-skill just fixes. Pick by intent: analysis → impeccable, "make it not look AI" → redesign-skill.
+
+3. Want specific aesthetic
+
+Invoke preset explicitly — they don't auto-trigger well by design intent:
+- minimalist-skill → Notion-like editorial, warm monochrome, pastels
+- brutalist-skill → Swiss print / military terminal, mono type, hazard red
+
+These stack on top of whichever flow above: preset sets the look, impeccable/redesign does process.
+
+4. Visual reference before code
+
+Image gen, no code:
+- imagegen-frontend-web → one image per landing-page section
+- imagegen-frontend-mobile → app screens in phone mockups
+- brandkit → logo/identity boards
+
+Typical combo: imagegen-web for direction → impeccable craft to implement.
+
+What changed vs before
+
+Before: "design a landing page" could match 5 overlapping skills with contradicting rules (Inter b one obvious route per situation, no roulette. Taste rules didn't vanish — impeccable's design laws+ reference files carry them.
