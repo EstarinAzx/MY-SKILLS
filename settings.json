@@ -1,7 +1,7 @@
 {
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
-      "*",
       "mcp__pencil"
     ],
     "defaultMode": "bypassPermissions"
@@ -15,6 +15,15 @@
             "command": "\"C:\\Program Files\\nodejs\\node.exe\" \"C:\\Users\\S.D\\.claude\\hooks\\caveman-activate.js\"",
             "timeout": 5,
             "statusMessage": "Loading caveman mode..."
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"C:\\Program Files\\nodejs\\node.exe\" \"C:\\Users\\S.D\\.claude\\.claude-manager\\session-start-tap.js\""
           }
         ]
       }
@@ -35,9 +44,16 @@
   "worktree": {
     "baseRef": "fresh"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\S.D\\.claude\\skills\\elucidate-plugin\\src\\hooks\\statusline-wrapper.ps1\""
+  },
   "enabledPlugins": {
     "codex@openai-codex": true,
-    "caveman@caveman": true
+    "caveman@caveman": true,
+    "elucidate@elucidate": true,
+    "superpowers@claude-plugins-official": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "openai-codex": {
@@ -51,16 +67,27 @@
         "source": "github",
         "repo": "JuliusBrussee/caveman"
       }
+    },
+    "elucidate": {
+      "source": {
+        "source": "directory",
+        "path": "C:\\Users\\S.D\\.claude\\skills\\elucidate-plugin"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
     }
   },
+  "effortLevel": "xhigh",
+  "awaySummaryEnabled": false,
   "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "autoMemoryEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "skipAutoPermissionPrompt": true,
-  "statusLine": {
-    "type": "command",
-    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File \"C:\\Users\\S.D\\.claude\\hooks\\caveman-statusline.ps1\""
-  }
+  "editorMode": "normal",
+  "skipAutoPermissionPrompt": true
 }

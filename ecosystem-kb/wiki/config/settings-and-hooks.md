@@ -16,7 +16,7 @@ State of `~/.claude/settings.json` as of 2026-06-12.
 - SessionStart → `.claude-manager/session-start-tap.js` — claude-manager session tap.
 - UserPromptSubmit → `caveman-mode-tracker.js` — re-asserts caveman + elucidate mode state per prompt.
 
-**Statusline:** PowerShell wrapper from the [[elucidate]] plugin (`elucidate-plugin/src/hooks/statusline-wrapper.ps1`) — renders mode badges.
+**Statusline:** PowerShell wrapper from the [[elucidate]] plugin (`elucidate-plugin/src/hooks/statusline-wrapper.ps1`) — single composed entry. Each badge script runs independently; caveman + ponytail use `exit`, so the wrapper runs them in child processes; elucidate's badge was dot-sourced. As of 2026-06-21 it renders `[CAVEMAN] [ELUCIDATE] [PONYTAIL]`; elucidate's badge is identity-only (its `[MODE:…]` bracket dropped by request).
 
 **Enabled plugins:** codex@openai-codex, caveman@caveman, elucidate@elucidate (directory marketplace), superpowers@claude-plugins-official. Loading mechanics: [[plugin-loading]].
 

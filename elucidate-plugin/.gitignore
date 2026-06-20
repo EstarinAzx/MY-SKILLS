@@ -1,0 +1,13 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Runtime flag / config are written under $CLAUDE_CONFIG_DIR, never in the repo,
+# but ignore them here as a guard in case anyone copies one in.
+.elucidate-active

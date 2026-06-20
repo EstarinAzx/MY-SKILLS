@@ -13,4 +13,4 @@ Self-authored commenting-mode plugin, loaded **by directory** (not marketplace):
 
 Commands: `/elucidate:default|:learner|:technical|:off`. Applies to logic-bearing source files only; skips configs/markdown/fixtures. Sync rule: edit a comment whenever the code it describes changes.
 
-Also owns the statusline: `settings.json` points at `elucidate-plugin/src/hooks/statusline-wrapper.ps1`, which renders `[ELUCIDATE] [MODE:…]` badges ([[settings-and-hooks]]).
+Also owns the statusline plumbing: `settings.json` points at `elucidate-plugin/src/hooks/statusline-wrapper.ps1`, the single composed entry. As of 2026-06-21 it renders `[CAVEMAN] [ELUCIDATE] [PONYTAIL]`. Elucidate's badge shows **identity only** — the `[MODE:…]` bracket was dropped by request (mode/color still parsed from the flag, just not displayed). ([[settings-and-hooks]], [[ponytail]])

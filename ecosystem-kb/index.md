@@ -11,10 +11,12 @@ updated: 2026-06-12
 - [[caveman]] — terse-output mode + cavecrew compressed subagents; hook-activated every session
 - [[codex]] — second-opinion/rescue bridge to local Codex CLI (openai/codex-plugin-cc)
 - [[elucidate]] — plain-English commenting mode; sole survivor of commenting consolidation; owns statusline
+- [[ponytail]] — code-minimalism mode (YAGNI/stdlib-first) + review/audit/debt skills; hook+statusline, third such mode (DietrichGebert/ponytail v4.7.0)
 
 ## Skills
 
 - [[design-skills]] — impeccable-led frontend family: redesign, minimalist/brutalist presets, brandkit + imagegen
+- [[design-pipeline]] — pencil→code: pencil-bridge + token-sync + screenshot-diff (gives the dormant pencil MCP consumers)
 - [[llm-kb]] — per-topic wiki vaults (built this one); no-hooks hard rule
 - [[context-handoff]] — .context/ per-project handoff: init / update / sync
 - [[grill-skills]] — plan stress-testing: grill-me, grill-with-docs
@@ -23,8 +25,9 @@ updated: 2026-06-12
 - [[mcp-tooling]] — mcp2cli, unity-mcp-skill, mcp-source
 - [[bugs-begone]] — opt-in instrumented debugging for hard bugs
 - [[output-skill]] — anti-truncation, complete-output enforcement
-- [[preset]] — /preset prompt library: catch-up, init, review, scope, ship
-- [[read-flow]] — multi-file end-to-end flow tracing
+- [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn (trace + glossary grill)
+- [[trace]] — multi-file end-to-end flow tracing (renamed from read-flow 2026-06-12)
+- [[ecosystem-audit]] — meta self-maintenance: skills/ ↔ vault reconciler + skills-dir footgun linter (deterministic, read-only)
 
 ## Config
 

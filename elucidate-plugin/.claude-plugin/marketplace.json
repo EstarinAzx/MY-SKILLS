@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "elucidate",
+  "description": "ELUCIDATE mode for Claude Code — a lightweight commenting mode that writes code carrying its logic in plain-English inline comments.",
+  "owner": {
+    "name": "EstarinAzx"
+  },
+  "plugins": [
+    {
+      "name": "elucidate-local",
+      "description": "Write code carrying its logic in plain-English comments, sectioned by banner comments. Straight implementation — no scaffold, no approval gate. Toggle as a persistent session mode: default / learner / technical.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
