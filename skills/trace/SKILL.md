@@ -1,9 +1,9 @@
 ---
-name: read-flow
-description: Use when the user asks how a flow works end-to-end across multiple files in a codebase, why a multi-step behavior fails, or where to add a feature touching several layers — "how does login work", "trace the checkout flow", "walk me through X", "/read-flow". Not for single-file or single-function questions; answer those normally.
+name: trace
+description: Use when the user asks how a flow works end-to-end across multiple files in a codebase, why a multi-step behavior fails, or where to add a feature touching several layers — "how does login work", "trace the checkout flow", "walk me through X", "/trace". Not for single-file or single-function questions; answer those normally.
 ---
 
-# /read-flow
+# /trace
 
 Read one flow of an unfamiliar codebase with a question-first methodology, answer with verifiable references, persist what was learned so the next pass is cheaper.
 
@@ -59,6 +59,25 @@ Four sections, in order:
 2. **Data journey** — numbered hops, each with `file:line` and the transformation named.
 3. **Failure paths** — lens-matched findings.
 4. **Gaps** — what you did NOT verify (assumed configs, unread branches, generated code). Never omit; honesty beats fake completeness.
+
+### Register — who the answer is for
+
+Default **engineer**: the four sections above, `file:line`-forward. When invoked
+with a **plain register** (the `learn` preset, or the user asks to keep it
+non-technical / "without the jargon"), change the *presentation only* — the
+trace itself, the data discipline, the `file:line` capture, and flows.md
+persistence are all unchanged. Plain remap of Step 7:
+
+1. **Summary** → 1–2 everyday-language sentences, no jargon, no paths; a concrete
+   real-world analogy is welcome when it clarifies.
+2. **Data journey** → the same hops in plain words; each may carry its `file:line`
+   in trailing parentheses, never leading with it.
+3. **Failure paths** → "when it goes wrong", in plain terms.
+4. **Gaps** → unchanged.
+
+Then offer the engineer view (the `file:line` call path) in one closing line —
+and if the answer came out map- or graph-shaped, offer to save it as its own
+`.md` (beyond the terse flows.md entry). Do not write that file unasked.
 
 ## Step 8: Persist to flows.md
 

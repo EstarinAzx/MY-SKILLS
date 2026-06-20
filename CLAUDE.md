@@ -85,9 +85,9 @@ Query with `/llm-kb query <question>` or read the vault directly. If the ecosyst
 - At session end, or before forking to a new line of work: run `/context-update` to refresh active-work.md and append any decisions made.
 - If the project has no `.context/` yet and work will span multiple sessions, suggest `/context-init` once — don't create it unasked.
 
-## 7. Explanation Style for /read-flow
+## 7. Explanation Style for /trace
 
-**When /read-flow is invoked, answer in beginner-friendly simplified style.**
+**When /trace is invoked, answer in beginner-friendly simplified style.**
 
 Structure the user-facing answer as:
 
