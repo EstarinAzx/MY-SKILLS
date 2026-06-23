@@ -1,6 +1,6 @@
 ---
 type: index
-updated: 2026-06-12
+updated: 2026-06-24
 ---
 
 # Index
@@ -26,6 +26,7 @@ updated: 2026-06-12
 - [[bugs-begone]] — opt-in instrumented debugging for hard bugs
 - [[output-skill]] — anti-truncation, complete-output enforcement
 - [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn (trace + glossary grill)
+- [[teach]] — `/teach <topic>` stateful multi-session teaching workspace → beautiful HTML lessons (added 2026-06-24)
 - [[trace]] — multi-file end-to-end flow tracing (renamed from read-flow 2026-06-12)
 - [[happy-path]] — `/hp` forward-design twin of trace: golden-path MVD before code exists; feeds `/preset init` (built 2026-06-21)
 - [[ecosystem-audit]] — meta self-maintenance: skills/ ↔ vault reconciler + skills-dir footgun linter (deterministic, read-only)

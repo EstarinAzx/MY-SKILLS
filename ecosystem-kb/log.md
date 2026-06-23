@@ -60,6 +60,21 @@ Installed `ponytail@ponytail` v4.7.0 from GitHub marketplace `DietrichGebert/pon
 
 Third brainstorm build. Three new skills give the dormant pencil MCP its first consumers: `~/.claude/skills/pencil-bridge/` (anchor — .pen → brief → impeccable), `token-sync/` (variables ↔ CSS/DTCG round-trip), `screenshot-diff/` (pencil reference vs rendered build). SKILL.md only, orchestration around impeccable + the pencil MCP — no deterministic tests, UNVERIFIED against live MCP (need a real .pen to exercise). Documented in [[design-pipeline]]; pencil MCP usage was ~0 (decision to keep made this session — actual Pencil use is the Antigravity VSCode extension, not this MCP). Wiring only, so no [[design-skill-lineup]] one-winner conflict.
 
+## [2026-06-24] add | teach skill (multi-session teaching workspace)
+
+New standalone skill `~/.claude/skills/teach/` documented. `/teach <topic>` —
+user-invoked only (`disable-model-invocation: true`), turns the cwd into a
+stateful teaching workspace producing beautiful self-contained HTML lessons
+(`./lessons/0001-...html`) grounded in `MISSION.md`, fed by trusted
+`RESOURCES.md`, tracked via ADR-style `./learning-records/`, reusing
+`./assets/` components (shared stylesheet first). Pedagogy: knowledge→skills→
+wisdom, storage-strength over fluency (retrieval/spacing/interleaving). Format
+specs ship beside SKILL.md (MISSION/RESOURCES/LEARNING-RECORD/GLOSSARY). Routing
+note: orthogonal to [[preset]] `learn` (codebase-vocab) and [[llm-kb]] (source
+vaults) — teach instructs a *human learner* over many sessions. Wrote [[teach]],
+updated index, [[ecosystem-overview]] layer 3. Doc-only sync (skill authored by
+user, not built this session).
+
 ## [2026-06-21] build | /hp happy-path skill (forward-design twin of trace)
 
 Fourth brainstorm build. New skill `~/.claude/skills/hp/` — `/hp [idea]` draws an MVD (minimum viable diagram): the one success spine of a user journey *before* code exists, the forward-design inverse of [[trace]] (which reads built code inward). Convey-mode menu asked each invoke (`ux+beat` default / `ux` / `system` / `beats`); box modes render Mermaid `flowchart`, persists to `.context/happy-path.md` (one `##` per flow) mirroring trace's flows.md — design-time vs built-time, two files side by side. Core discipline: success spine only, no error/edge forks (red-flagged); ≤2 clarifying Qs, not a grill. Wired into [[preset]] `init` as a step between grill and PRD (init renumbered to 8 steps; PRD embeds the MVD). GREEN application test (clean subagent, recipe-app idea with two planted error-branch temptations) passed 4/4 — resisted both forks, 0 clarifying Qs, correct `ux+beat` semantics, valid Mermaid. Synced [[happy-path]] (new), [[trace]], [[preset]], index, [[ecosystem-overview]]. Skipped the full RED pressure-gauntlet as disproportionate for a personal technique skill (ponytail).
