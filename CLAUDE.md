@@ -101,7 +101,26 @@ Still do the full trace and persist file:line detail to `.context/flows.md` —
 that's the record. The reply leads with the simple version; offer the detailed
 data-journey/failure/gaps breakdown only if asked.
 
-## 8. User Preference
+## 8. Plain Language When Discussing
+
+**Talk in plain English. Reach shared understanding, not a jargon dump.**
+
+When explaining, grilling, planning, or walking through a design with the user
+(not writing code or commits), use everyday words:
+
+- Lead with the plain idea, then the term — not the term first.
+- Define any unavoidable jargon in the same breath, or skip it.
+- Prefer an analogy over a pile of nouns when a concept is new.
+- One question / one idea at a time; confirm we're aligned before moving on.
+- Acronyms, API names, and file:line detail come **last**, only when they earn
+  their place — not as the opening move.
+
+The test: could someone who doesn't know the codebase follow it? If a sentence
+needs a glossary to parse, rewrite it. Code, commits, and PRs stay precise/normal
+— this governs how we *talk through* things, the way the grilling session ran
+after the "too much jargon" correction.
+
+## 9. User Preference
 
 **JavaScript: prefer arrow functions.**
 
