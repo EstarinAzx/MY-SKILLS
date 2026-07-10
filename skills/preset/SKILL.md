@@ -27,8 +27,10 @@ The session-handoff loop, in order: a session goes in one door, through the gate
 | `ship`     | post-commit | Push the branch and open a PR composed from the diff. |
 | `learn`    | off-loop (anytime) | Trace a flow via `trace`, mini-grill any vocabulary mismatches (grill-with-docs machinery) → resolved terms land in `CONTEXT.md`. |
 | `prompt-writer` | off-loop (anytime) | Turn a rough ask into a paste-ready agent/subagent prompt — verify the claims against reality, scope each target, set boundaries, cut ceremony; output the block + a short "what changed". |
+| `health`   | off-loop (maintenance) | Run every deterministic checker (ecosystem audit, template drift, vault lint) and report one punch list; offers fixes, applies only template mirroring on confirmation. |
+| `mp-update` | off-loop (maintenance) | Pull a new mattpocock/skills release: refresh the curated list, never install the excluded five, reapply the two local patches, verify, sync vault + template. |
 
-Steady-state cycle is `pick-up` → work → `wrap-up`; `scope`/`review`/`ship` are opt-in bookends, `catch-up` the fallback door when no note exists, and `init` runs once before the loop ever starts — when all that exists is an idea. `learn` and `prompt-writer` sit off-loop entirely — invoke anytime to map a flow (`learn`) or to forge a clean prompt for the next agent (`prompt-writer`).
+Steady-state cycle is `pick-up` → work → `wrap-up`; `scope`/`review`/`ship` are opt-in bookends, `catch-up` the fallback door when no note exists, and `init` runs once before the loop ever starts — when all that exists is an idea. `learn` and `prompt-writer` sit off-loop entirely — invoke anytime to map a flow (`learn`) or to forge a clean prompt for the next agent (`prompt-writer`). `health` and `mp-update` are the off-loop maintenance pair: whole-ecosystem checkup, and the curated mattpocock release-update procedure.
 
 ## Process
 

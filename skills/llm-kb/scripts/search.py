@@ -12,6 +12,7 @@ import sys
 from collections import Counter
 
 WORD = re.compile(r"[a-z0-9]+")
+WIKILINK = re.compile(r"\[\[([^\]|#\n]+)")
 
 
 def tokenize(text):
@@ -69,12 +70,97 @@ def first_match_line(text, query_tokens):
     return ""
 
 
+# ------------------------- registry & cross-vault -------------------------- #
+
+# ~/.claude/vault-registry.txt, derived from this script's location so one
+# registry serves every vault
+def default_registry():
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "vault-registry.txt"))
+
+
+# vault paths from the registry — blank lines and # comments ignored
+def load_registry(path):
+    vaults = []
+    try:
+        with open(path, encoding="utf-8-sig", errors="ignore") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#"):
+                    vaults.append(line)
+    except OSError:
+        pass
+    return vaults
+
+
+# search every registered vault and merge, each hit tagged "vault/relpath".
+# per-vault IDF is local and merged by raw score — good enough at personal scale
+def search_all(vaults, query):
+    merged = []
+    for vault in vaults:
+        if not os.path.isdir(vault):
+            continue
+        tag = os.path.basename(os.path.normpath(vault))
+        docs = collect_docs(vault)
+        for score, path in score_docs(docs, query):
+            relpath = os.path.relpath(path, vault).replace(os.sep, "/")
+            merged.append((score, "%s/%s" % (tag, relpath), first_match_line(docs[path], query)))
+    merged.sort(key=lambda r: (-r[0], r[1]))
+    return merged
+
+
+# ------------------------------ backlinks ---------------------------------- #
+
+# wiki pages linking TO <page> via [[page]] (alias/heading suffix stripped,
+# case-insensitive) — the inbound view that lint's orphan check cannot show
+def backlinks(vault, page):
+    target = page.strip().lower()
+    hits = []
+    for dirpath, dirs, files in os.walk(os.path.join(vault, "wiki")):
+        dirs[:] = [d for d in dirs if d.lower() != "assets"]
+        for name in sorted(files):
+            if not name.lower().endswith(".md"):
+                continue
+            path = os.path.join(dirpath, name)
+            try:
+                with open(path, encoding="utf-8-sig", errors="ignore") as f:
+                    text = f.read()
+            except OSError:
+                continue
+            if any(t.strip().lower() == target for t in WIKILINK.findall(text)):
+                hits.append(os.path.relpath(path, vault).replace(os.sep, "/"))
+    return sorted(hits)
+
+
 # --------------------------------- main ------------------------------------ #
 
 def main(argv):
     # piped stdout on Windows defaults to cp1252 — unicode snippets must not crash
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+    # --all <terms...> — federated search across every registered vault
+    if len(argv) >= 2 and argv[1] == "--all":
+        if len(argv) < 3:
+            print("usage: search.py --all <query terms...>", file=sys.stderr)
+            return 2
+        vaults = load_registry(default_registry())
+        if not vaults:
+            print("no vaults registered — add paths to %s" % default_registry(), file=sys.stderr)
+            return 2
+        for score, tagged, line in search_all(vaults, tokenize(" ".join(argv[2:])))[:10]:
+            print("%.3f\t%s\t%s" % (score, tagged, line))
+        return 0
+
+    # --backlinks <vault> <page> — pages linking to a given page
+    if len(argv) >= 2 and argv[1] == "--backlinks":
+        if len(argv) != 4 or not os.path.isdir(argv[2]):
+            print("usage: search.py --backlinks <vault-dir> <page-name>", file=sys.stderr)
+            return 2
+        for relpath in backlinks(argv[2], argv[3]):
+            print(relpath)
+        return 0
+
+    # default: single-vault ranked search (original contract, unchanged)
     if len(argv) < 3 or not os.path.isdir(argv[1]):
         print("usage: search.py <vault-dir> <query terms...>", file=sys.stderr)
         return 2

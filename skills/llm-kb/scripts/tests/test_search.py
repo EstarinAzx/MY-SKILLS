@@ -56,6 +56,28 @@ class SearchTests(unittest.TestCase):
         write(self.vault, "wiki/concepts/zzz.md", "unicorn horn\n")
         self.assertEqual(self.rank("unicorn"), ["aaa.md", "zzz.md"])
 
+    def test_backlinks_finds_inbound_case_insensitive(self):
+        write(self.vault, "wiki/concepts/refs.md", "see [[dragons]] and [[Economy]]\n")
+        self.assertIn("wiki/concepts/refs.md", search.backlinks(self.vault, "dragons"))
+        self.assertIn("wiki/concepts/refs.md", search.backlinks(self.vault, "economy"))
+        self.assertEqual(search.backlinks(self.vault, "nowhere"), [])
+
+    def test_search_all_merges_tags_and_sorts(self):
+        a = tempfile.TemporaryDirectory()
+        b = tempfile.TemporaryDirectory()
+        try:
+            write(a.name, "wiki/x.md", "dragon dragon dragon\n")
+            write(b.name, "wiki/y.md", "a lone dragon\n")
+            results = search.search_all([a.name, b.name], search.tokenize("dragon"))
+            tags = {r[1].split("/")[0] for r in results}
+            self.assertIn(os.path.basename(a.name), tags)
+            self.assertIn(os.path.basename(b.name), tags)
+            scores = [r[0] for r in results]
+            self.assertEqual(scores, sorted(scores, reverse=True))
+        finally:
+            a.cleanup()
+            b.cleanup()
+
 
 if __name__ == "__main__":
     unittest.main()

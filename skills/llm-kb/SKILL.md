@@ -42,5 +42,8 @@ Every wiki page: YAML frontmatter (`type`, `updated`, `tags`; source pages add `
 
 Run with the vault path as first argument; one copy here serves every vault. `<this skill's dir>` is the path printed as "Base directory for this skill" when this skill loads — use it verbatim, quoted:
 
-- `python "<this skill's dir>\scripts\search.py" <vault> <terms...>` — ranked keyword search. Use during query when index.md misses or the vault exceeds ~100 pages.
+- `python "<this skill's dir>\scripts\search.py" <vault> <terms...>` — ranked keyword search in one vault. Use during query when index.md misses or the vault exceeds ~100 pages.
+- `python "<this skill's dir>\scripts\search.py" --all <terms...>` — federated search across every vault listed in `~/.claude/vault-registry.txt` (one path per line, `#` comments allowed); hits tagged `vault/relpath`. Use when the answer might live in another vault.
+- `python "<this skill's dir>\scripts\search.py" --backlinks <vault> <page>` — pages linking to `<page>` (the inbound view; orphan pages come from lint).
 - `python "<this skill's dir>\scripts\lint.py" <vault>` — structural checks. Always the first step of the lint op.
+- `python "<this skill's dir>\scripts\lint.py" <vault> --stale [days]` — adds a freshness pass: pages older than `days` (default 90) by `updated:` date, plus source pages whose immutable `raw/` file is newer than the page derived from it.

@@ -1,9 +1,10 @@
 # ------------- test_lint.py — unit tests for vault lint checks ------------- #
 """
-Depends on: stdlib only (contextlib, io, os, sys, tempfile, unittest); lint.py via sys.path.
+Depends on: stdlib only (contextlib, datetime, io, os, sys, tempfile, unittest); lint.py via sys.path.
 Data shapes: builds throwaway vault dirs per test; asserts on Issue namedtuples.
 """
 import contextlib
+import datetime
 import io
 import os
 import sys
@@ -95,6 +96,27 @@ class LintTests(unittest.TestCase):
             self.assertEqual(lint.collect_issues(v), [])
         finally:
             clean.cleanup()
+
+    def test_stale_page_flagged_and_fresh_not(self):
+        write(self.vault, "wiki/concepts/old.md", "---\ntype: concept\nupdated: 2025-01-01\n---\nsee [[alpha]]\n")
+        write(self.vault, "wiki/concepts/recent.md", "---\ntype: concept\nupdated: 2026-06-01\n---\nsee [[alpha]]\n")
+        stale = lint.stale_issues(self.vault, 90, today=datetime.date(2026, 6, 12))
+        self.assertTrue(any(i.category == "stale" and "old" in i.location for i in stale))
+        self.assertFalse(any(i.category == "stale" and "recent" in i.location for i in stale))
+
+    def test_source_newer_than_page_flagged(self):
+        write(self.vault, "raw/clip.md", "article\n")
+        write(self.vault, "wiki/sources/clip-source.md", "---\ntype: source\nraw: clip.md\n---\nsee [[alpha]]\n")
+        # force the raw source's mtime to be newer than the page derived from it
+        os.utime(os.path.join(self.vault, "wiki", "sources", "clip-source.md"), (1000, 1000))
+        os.utime(os.path.join(self.vault, "raw", "clip.md"), (2000, 2000))
+        stale = lint.stale_issues(self.vault, 99999)
+        self.assertTrue(any(i.category == "source-newer" and "clip-source" in i.location for i in stale))
+
+    def test_parse_args_handles_stale_flag(self):
+        self.assertEqual(lint.parse_args([self.vault]), ([self.vault], False, 90))
+        self.assertEqual(lint.parse_args([self.vault, "--stale"]), ([self.vault], True, 90))
+        self.assertEqual(lint.parse_args([self.vault, "--stale", "30"]), ([self.vault], True, 30))
 
     def test_main_output_format_and_exit_codes(self):
         out = io.StringIO()
