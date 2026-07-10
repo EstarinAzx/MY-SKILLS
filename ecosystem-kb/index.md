@@ -1,6 +1,6 @@
 ---
 type: index
-updated: 2026-06-24
+updated: 2026-07-10
 ---
 
 # Index
@@ -19,8 +19,9 @@ updated: 2026-06-24
 - [[design-pipeline]] — pencil→code: pencil-bridge + token-sync + screenshot-diff (gives the dormant pencil MCP consumers)
 - [[llm-kb]] — per-topic wiki vaults (built this one); no-hooks hard rule
 - [[context-handoff]] — .context/ per-project handoff: init / update / sync
-- [[grill-skills]] — plan stress-testing: grill-me, grill-with-docs
-- [[github-planning]] — to-prd, to-issues: plan → PRD → tracer-bullet issues
+- [[grill-skills]] — plan stress-testing: grilling (helper), grill-me, grill-with-docs
+- [[github-planning]] — to-spec, to-tickets, triage: plan → spec → tracer-bullet tickets
+- [[mattpocock-lifecycle]] — wayfinder → to-spec → to-tickets → implement suite + research/prototype/domain-modeling/codebase-design (v1.1.0, curated)
 - [[improve-codebase-architecture]] — CONTEXT.md/ADR-informed refactoring finder
 - [[mcp-tooling]] — mcp2cli, unity-mcp-skill, mcp-source
 - [[bugs-begone]] — opt-in instrumented debugging for hard bugs
@@ -44,6 +45,7 @@ updated: 2026-06-24
 - [[knowledge-base-lineup]] — 2026-06-11: llm-kb replaces kb/; no-hooks hard rule born
 - [[tdd-lineup]] — 2026-06-11: superpowers TDD sole; local tdd/ deprecated
 - [[commenting-mode-lineup]] — 2026-06-11: elucidate kept, skeleton deleted outright
+- [[mattpocock-skills-lineup]] — 2026-07-10: v1.1.0 curated install; handoff/tdd/code-review/diagnosing-bugs/writing-great-skills excluded
 
 ## Sources
 

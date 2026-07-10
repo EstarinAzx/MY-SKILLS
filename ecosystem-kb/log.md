@@ -4,6 +4,10 @@ type: log
 
 # Log
 
+## [2026-07-10] install | mattpocock/skills v1.1.0 (curated)
+
+Cloned mattpocock/skills at v1.1.0 and installed a curated set into `~/.claude/skills/`. Renames applied: to-prd → **to-spec**, to-issues → **to-tickets** (old folders + pre-update copies of grill-me/grill-with-docs/improve-codebase-architecture/teach → `_deprecated/mp-pre-v1.1-backup/`). Updated in place: grill-me, grill-with-docs (ADR/CONTEXT formats moved out to domain-modeling), improve-codebase-architecture (now HTML report), teach (structure unchanged). New: grilling (helper — one-question-at-a-time + confirmation gate), wayfinder, research, prototype, implement, triage, domain-modeling, codebase-design, ask-matt, setup-matt-pocock-skills, resolving-merge-conflicts. Excluded per [[mattpocock-skills-lineup]]: handoff (user call — [[context-handoff]] owns it), tdd ([[tdd-lineup]]), code-review (built-in name collision), diagnosing-bugs, writing-great-skills. Local patches: implement/SKILL.md points at superpowers TDD; ask-matt carries a "Local ecosystem note" routing excluded names. Synced [[github-planning]], [[grill-skills]], [[improve-codebase-architecture]], [[teach]]; new [[mattpocock-lifecycle]] + [[mattpocock-skills-lineup]]; index updated.
+
 ## [2026-06-12] init | Claude ecosystem
 
 Vault created at `~/.claude/ecosystem-kb`. Categories: plugins, skills, config, decisions. Ingest style: batch. Primary source: live inspection of ~/.claude.

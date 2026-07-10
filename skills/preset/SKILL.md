@@ -18,7 +18,7 @@ The session-handoff loop, in order: a session goes in one door, through the gate
 
 | Preset | Slot | Purpose |
 |---|---|---|
-| `init`     | door zero (idea) | Raw idea → `grill-me` interview → `/hp` MVD → `to-prd` → `to-issues`; one up-front choice of destination (GitHub issues or local md), then hand off to `scope`. |
+| `init`     | door zero (idea) | Raw idea → `grill-me` interview → `/hp` MVD → `to-spec` → `to-tickets`; one up-front choice of destination (GitHub issues or local md), then hand off to `scope`. |
 | `pick-up`  | start (baton) | Read the `.context/pick-up.md` note left by `wrap-up` and resume the exact next task. |
 | `catch-up` | start (no baton) | No note → orient from live git/PR/`.context/` state and ask what to work on. |
 | `scope`    | entry gate | Restate the task, plan files-to-touch + risks, go/no-go before any code. |
@@ -26,8 +26,9 @@ The session-handoff loop, in order: a session goes in one door, through the gate
 | `wrap-up`  | exit gate | Eyeball go/no-go → `context-update` → write the `pick-up.md` handoff note → commit. |
 | `ship`     | post-commit | Push the branch and open a PR composed from the diff. |
 | `learn`    | off-loop (anytime) | Trace a flow via `trace`, mini-grill any vocabulary mismatches (grill-with-docs machinery) → resolved terms land in `CONTEXT.md`. |
+| `prompt-writer` | off-loop (anytime) | Turn a rough ask into a paste-ready agent/subagent prompt — verify the claims against reality, scope each target, set boundaries, cut ceremony; output the block + a short "what changed". |
 
-Steady-state cycle is `pick-up` → work → `wrap-up`; `scope`/`review`/`ship` are opt-in bookends, `catch-up` the fallback door when no note exists, and `init` runs once before the loop ever starts — when all that exists is an idea. `learn` sits off-loop entirely — invoke anytime to map a flow and its vocabulary.
+Steady-state cycle is `pick-up` → work → `wrap-up`; `scope`/`review`/`ship` are opt-in bookends, `catch-up` the fallback door when no note exists, and `init` runs once before the loop ever starts — when all that exists is an idea. `learn` and `prompt-writer` sit off-loop entirely — invoke anytime to map a flow (`learn`) or to forge a clean prompt for the next agent (`prompt-writer`).
 
 ## Process
 

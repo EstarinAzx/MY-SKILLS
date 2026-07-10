@@ -1,8 +1,8 @@
 ---
 type: skill
-updated: 2026-06-24
+updated: 2026-07-10
 tags: [skill, learning, teaching]
-source: live inspection 2026-06-24
+source: mattpocock/skills v1.1.0, refreshed 2026-07-10 (structure unchanged)
 ---
 
 # teach
