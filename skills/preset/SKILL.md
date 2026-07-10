@@ -18,7 +18,7 @@ The session-handoff loop, in order: a session goes in one door, through the gate
 
 | Preset | Slot | Purpose |
 |---|---|---|
-| `init`     | door zero (idea) | Raw idea → `grill-me` interview → `/hp` MVD → `to-spec` → `to-tickets`; one up-front choice of destination (GitHub issues or local md), then hand off to `scope`. |
+| `init`     | door zero (idea) | Raw idea → `grill-me` interview → `/hp` MVD → `to-spec` → `to-tickets`; one up-front choice of destination (GitHub issues or local md) that also seeds a conditional `/setup-matt-pocock-skills` offer when `docs/agents/` is missing, then hand off to `scope`. |
 | `pick-up`  | start (baton) | Read the `.context/pick-up.md` note left by `wrap-up` and resume the exact next task. |
 | `catch-up` | start (no baton) | No note → orient from live git/PR/`.context/` state and ask what to work on. |
 | `scope`    | entry gate | Restate the task, plan files-to-touch + risks, go/no-go before any code. |
