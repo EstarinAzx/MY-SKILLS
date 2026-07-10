@@ -29,8 +29,14 @@ The session-handoff loop, in order: a session goes in one door, through the gate
 | `prompt-writer` | off-loop (anytime) | Turn a rough ask into a paste-ready agent/subagent prompt — verify the claims against reality, scope each target, set boundaries, cut ceremony; output the block + a short "what changed". |
 | `health`   | off-loop (maintenance) | Run every deterministic checker (ecosystem audit, template drift, vault lint) and report one punch list; offers fixes, applies only template mirroring on confirmation. |
 | `mp-update` | off-loop (maintenance) | Pull a new mattpocock/skills release: refresh the curated list, never install the excluded five, reapply the two local patches, verify, sync vault + template. |
+| `ticket-loop` | loop body | One `ready-for-agent` tracker ticket per firing: pick → branch → `/implement` → gate → breadcrumb comment; queue empty → stop the loop. |
+| `ci-babysit` | loop body | Watch a PR's checks: green → stop, pending → cheap one-liner, red → smallest honest fix or escalate to human; never fix-push twice for one failure. |
 
 Steady-state cycle is `pick-up` → work → `wrap-up`; `scope`/`review`/`ship` are opt-in bookends, `catch-up` the fallback door when no note exists, and `init` runs once before the loop ever starts — when all that exists is an idea. `learn` and `prompt-writer` sit off-loop entirely — invoke anytime to map a flow (`learn`) or to forge a clean prompt for the next agent (`prompt-writer`). `health` and `mp-update` are the off-loop maintenance pair: whole-ecosystem checkup, and the curated mattpocock release-update procedure.
+
+## Loop bodies
+
+`ticket-loop` and `ci-babysit` are written for the built-in `/loop` runner: `/loop /preset ticket-loop` (self-paced) or `/loop 30m /preset ci-babysit 42`. They also run fine as one-shots. Every loop body honors the same contract: **check state first** (each firing idempotent — never redo finished work), **one unit of work per firing** (the runner re-fires; the preset never chains), **breadcrumbs** where the next firing will look (ticket comment, PR comment), and an **explicit stop signal** when the queue is dry, the checks are green, or a human is needed. `health` is loopable as-is (`/loop 1d /preset health`) — it's naturally idempotent.
 
 ## Process
 

@@ -26,7 +26,7 @@ updated: 2026-07-10
 - [[mcp-tooling]] — mcp2cli, unity-mcp-skill, mcp-source
 - [[bugs-begone]] — opt-in instrumented debugging for hard bugs
 - [[output-skill]] — anti-truncation, complete-output enforcement
-- [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn/prompt-writer + maintenance pair health/mp-update
+- [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn/prompt-writer + maintenance health/mp-update + loop bodies ticket-loop/ci-babysit
 - [[teach]] — `/teach <topic>` stateful multi-session teaching workspace → beautiful HTML lessons (added 2026-06-24)
 - [[trace]] — multi-file end-to-end flow tracing (renamed from read-flow 2026-06-12)
 - [[happy-path]] — `/hp` forward-design twin of trace: golden-path MVD before code exists; feeds `/preset init` (built 2026-06-21)

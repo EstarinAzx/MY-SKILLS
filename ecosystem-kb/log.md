@@ -4,6 +4,10 @@ type: log
 
 # Log
 
+## [2026-07-10] build | loop-body presets: ticket-loop + ci-babysit
+
+Loop-engineering pass. Two [[preset]]s written as bodies for the built-in `/loop` runner, plus a "Loop bodies" section in preset SKILL.md naming the contract (state-check first, one unit per firing, breadcrumbs, explicit stop signal). `ticket-loop`: one unblocked `ready-for-agent` ticket per firing — pick → idempotency guard (existing branch/PR) → `ticket/<id>` branch → `/implement` → test gate → breadcrumb comment + relabel; queue dry → stop the loop; ambiguity/destructive → `ready-for-human`. `ci-babysit`: PR checks per firing — green→stop, pending→one cheap line, red→trivial fix / one flaky rerun / escalate with root-cause comment; never fix-push twice for one failure. Rejected: loop-framework skill (built-in `/loop` is the framework), cron routines (user drives loops). `health` noted loopable as-is. Synced [[preset]], index; template pushed.
+
 ## [2026-07-10] build | maintenance layer: template_sync.py + health/mp-update presets
 
 Ecosystem-improvement brainstorm applied (three picks, all rooted in this session's observed pain). (1) [[ecosystem-audit]] grew `scripts/template_sync.py` — deterministic live↔`template/IN USE` drift report (`drift`/`live-only`/`template-only`, newline-normalized, `.obsidian` ignored) with asymmetric `--apply`: skills/ mirrors only common folders (curation stays human), ecosystem-kb/ mirrors fully; tests green; first live run caught real drift (template's stale `skills/llm-kb`). (2) [[preset]] `health` — audit.py + template_sync.py + llm-kb lint --stale in one punch list. (3) [[preset]] `mp-update` — the [[mattpocock-skills-lineup]] procedure codified (curated list, excluded five, two patches, verify, sync); memory updated to point at it. Rejected in brainstorm: retro preset (wrap-up covers), triage/research presets (skills already direct), any hook automation (no-hooks rule). Curation call: `ecosystem-audit` skill added to template — `/preset health` depends on its scripts. Synced [[ecosystem-audit]], [[preset]], [[ecosystem-overview]], index.
