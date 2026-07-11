@@ -4,6 +4,17 @@ type: log
 
 # Log
 
+## [2026-07-12] synthesis | harness-engineering page
+
+Named the umbrella: new [[harness-engineering]] synthesis — the
+prompt→context→harness ladder (pick-up/wrap-up as the context-engineering
+gateway the whole setup grew from), the six harness components here
+(hooks/modes, contracts, state files, enforcement, session lifecycle,
+reproducibility), the pain→ritual→codify→generalize practice, and why a
+harness compounds where skill-hoarding doesn't (graph vs islands; the vault
+as the load-bearing piece). [[loop-engineering]] filed as subsystem.
+Doc-only sync: page + index.
+
 ## [2026-07-12] synthesis | loop-engineering page
 
 Named the loop stack as a concept: new [[loop-engineering]] synthesis —
