@@ -76,6 +76,32 @@ def test_all_categories():
         assert not any("buried" in d or "former" in d for d in ghosts)
 
 
+# the universal CLAUDE.md's slash commands must resolve to skills; /preset args
+# to preset files. Path-like slashes (.context/flows.md, ~/.claude/...) are noise
+def test_claude_md_refs():
+    with tempfile.TemporaryDirectory() as root:
+        make(root, "skills/trace/SKILL.md", "---\nname: trace\n---\n")
+        make(root, "skills/preset/SKILL.md", "---\nname: preset\n---\n")
+        make(root, "skills/preset/presets/wrap-up.md", "# wrap-up\n")
+        make(root, "ecosystem-kb/index.md", "- [[trace]] x\n- [[preset]] x\n")
+        make(root, "template/IN USE/CLAUDE.md",
+             "run `/trace` and `/preset wrap-up` and `/preset ghost-preset`\n"
+             "also `/vanished` should flag\n"
+             "noise: `.context/flows.md` and `~/.claude/template/IN USE/CLAUDE.md`\n"
+             "and wiki/syntheses/ecosystem-overview.md stay silent\n")
+
+        got = audit.collect_findings(root)
+        details = {f.detail for f in got if f.category == "claude-md-stale-ref"}
+
+        assert any("/vanished" in d for d in details)
+        assert any("ghost-preset" in d for d in details)
+        # live refs and path noise must not fire
+        assert not any("/trace" in d for d in details)
+        assert not any("wrap-up" in d for d in details)
+        assert not any("flows" in d or "template" in d or "syntheses" in d
+                       for d in details)
+
+
 # a fully consistent tiny tree produces zero findings
 def test_clean_tree():
     with tempfile.TemporaryDirectory() as root:
@@ -86,5 +112,6 @@ def test_clean_tree():
 
 if __name__ == "__main__":
     test_all_categories()
+    test_claude_md_refs()
     test_clean_tree()
     print("OK")

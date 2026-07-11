@@ -21,7 +21,10 @@ Findings: `stray-folder` (child of skills/ with no SKILL.md), `plugin-autoload`
 [[plugin-loading]]), `name-collision` (two skills, one `name:`),
 `vault-undocumented` (skill named nowhere here), `vault-stale-path` (a
 `~/.claude/skills/<name>/` path this vault asserts but disk lacks; `decisions/`
-and `log.md` exempt — they narrate history).
+and `log.md` exempt — they narrate history), `claude-md-stale-ref` (added
+2026-07-12: slash commands and `/preset` args named in the universal
+[[getclaude]] CLAUDE.md must resolve to a live skill/preset — nothing else
+guards that file).
 
 Second script `scripts/template_sync.py` (added 2026-07-10): drift between live
 `skills/`+`ecosystem-kb/` and `template/IN USE` (the copy pushed to MY-SKILLS).

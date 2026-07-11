@@ -19,6 +19,8 @@ Categories:
   name-collision     two skill folders declare the same `name:`
   vault-undocumented skill folder named nowhere in the ecosystem-kb vault
   vault-stale-path   a skills/<name>/ path written in the vault has no folder
+  claude-md-stale-ref  the universal CLAUDE.md (template/IN USE) names a slash
+                       command or /preset arg that no longer resolves
 """
 import os
 import re
@@ -148,6 +150,38 @@ def stale_paths(vault, skills_dir):
     return findings
 
 
+# ------------------------- universal CLAUDE.md check ----------------------- #
+
+# a slash command in prose: slash preceded by line start / whitespace / backtick
+# / paren — so path segments (.context/flows.md, ~/.claude/template/...) never match
+SLASH_CMD = re.compile(r"(?:^|[\s`(])/([a-z][a-z0-9-]+)", re.MULTILINE)
+PRESET_ARG = re.compile(r"/preset\s+([a-z][a-z0-9-]+)")
+
+
+# the universal CLAUDE.md that getclaude drops into projects names slash
+# commands and presets; nothing else checks that file, so silent staleness
+# (a renamed skill or preset) surfaces only here
+def claude_md_refs(root, skills):
+    findings = []
+    path = os.path.join(root, "template", "IN USE", "CLAUDE.md")
+    text = read(path)
+    if not text:
+        return findings
+    loc = "template/IN USE/CLAUDE.md"
+    # resolvable = a skills/ folder name or any declared `name:` value
+    known = set(skills) | {n for n in skills.values() if n}
+    for cmd in sorted(set(SLASH_CMD.findall(text))):
+        if cmd not in known:
+            findings.append(Finding("claude-md-stale-ref", loc,
+                                    "/%s resolves to no skills/ folder" % cmd))
+    presets_dir = os.path.join(root, "skills", "preset", "presets")
+    for arg in sorted(set(PRESET_ARG.findall(text))):
+        if not os.path.isfile(os.path.join(presets_dir, arg + ".md")):
+            findings.append(Finding("claude-md-stale-ref", loc,
+                                    "/preset %s has no presets/%s.md" % (arg, arg)))
+    return findings
+
+
 # ------------------------------ orchestration ------------------------------ #
 
 # run every check against a resolved ~/.claude root; deterministic flat list
@@ -156,6 +190,7 @@ def collect_findings(root):
     vault = os.path.join(root, "ecosystem-kb")
     skills, findings = scan_skills(skills_dir)
     findings += name_collisions(skills)
+    findings += claude_md_refs(root, skills)
     if os.path.isdir(vault):
         corpus = vault_corpus(vault)
         findings += undocumented(skills, corpus)
