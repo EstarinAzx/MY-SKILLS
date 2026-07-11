@@ -4,6 +4,24 @@ type: log
 
 # Log
 
+## [2026-07-12] build | /relay self-relaying loops
+
+Brainstorm build (spec 2026-07-11). New skill `~/.claude/skills/relay/` —
+wraps built-in `/loop` in legs of N iterations (default 10); at leg end:
+rewrite Handoff in project-local `.claude/relay/<slug>.md`, `Start-Process
+claude` a fresh session with the same `/relay` command injected, stop own
+loop. Fixes context rot + uncached re-read cost of long single-session
+loops (ScheduleWakeup and CronCreate are both session-bound — nothing
+in-session can outlive it, hence spawn). Kill switches: `/relay stop`,
+`max_legs: 20`, leg-fencing. Spawned legs run unattended → default spawn
+flag `--dangerously-skip-permissions` (live test same day: `acceptEdits`
+parked leg 2 on the loop skill's permission prompt — bypass or the chain
+stalls; `mode=accept` kept as edit-only opt-in). No
+watchdog hook by design (standing rule). Conscious partial revisit of the
+2026-07-10 "user drives loops explicitly" decision — spawn automated, user
+keeps start/stop/caps. [[preset]] loop bodies unchanged, wrappable as-is.
+Synced [[relay]] (new), [[preset]], index.
+
 ## [2026-07-10] build | loop-body presets: ticket-loop + ci-babysit
 
 Loop-engineering pass. Two [[preset]]s written as bodies for the built-in `/loop` runner, plus a "Loop bodies" section in preset SKILL.md naming the contract (state-check first, one unit per firing, breadcrumbs, explicit stop signal). `ticket-loop`: one unblocked `ready-for-agent` ticket per firing — pick → idempotency guard (existing branch/PR) → `ticket/<id>` branch → `/implement` → test gate → breadcrumb comment + relabel; queue dry → stop the loop; ambiguity/destructive → `ready-for-human`. `ci-babysit`: PR checks per firing — green→stop, pending→one cheap line, red→trivial fix / one flaky rerun / escalate with root-cause comment; never fix-push twice for one failure. Rejected: loop-framework skill (built-in `/loop` is the framework), cron routines (user drives loops). `health` noted loopable as-is. Synced [[preset]], index; template pushed.

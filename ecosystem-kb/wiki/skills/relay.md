@@ -1,0 +1,44 @@
+---
+type: skill
+updated: 2026-07-12
+tags: [skill, loops, handoff]
+source: built 2026-07-12; spec skills/docs/superpowers/specs/2026-07-11-relay-design.md
+---
+
+# relay
+
+Self-relaying loops — `/relay [interval] [N=10] [mode=bypass|accept] <body>`
+wraps the built-in `/loop` so a long loop runs in **legs** of N iterations.
+At each leg boundary the session rewrites the Handoff section of
+`.claude/relay/<slug>.md` (project-local; scratchpad is session-specific),
+spawns a fresh session via `Start-Process claude` with the same `/relay`
+command injected as first prompt, and stops its own loop. Fresh leg =
+startup hooks + skill + handoff only — context rot and uncached full-history
+re-reads (5-min cache TTL) reset every leg.
+
+Layering: relay owns state file + counting + handoff + spawn; `/loop` owns
+scheduling; the body (usually a [[preset]] loop body) owns the work and its
+loop-body contract, unchanged.
+
+Kill switches, mandatory because spawn is automated: `/relay stop [slug]`
+(any session or editor — it is a file edit), `max_legs: 20` cap +
+PushNotification, and leg-fencing (a firing whose session leg ≠ file leg
+dies silently — orphans self-terminate). Body-signaled done also sets
+`stop: true`, so a finished chain never respawns; re-running the same
+command revives a mid-leg crash (resume matches on the `body:` field, not
+re-derived slug).
+
+Sharp edge: spawned legs run unattended — default spawn flag is
+`--dangerously-skip-permissions`, flipped from the spec's `acceptEdits`
+after the 2026-07-12 live test: leg 2 parked on the loop skill's own "Use
+skill?" prompt, so anything short of bypass stalls every leg at boot.
+Consequence: only relay bodies trusted to run bypass; `mode=accept`
+remains for edit-only bodies in pre-allowlisted projects. Crash mid-leg
+dies silently by design: no watchdog
+hook (standing no-hooks/no-background-LLM rule); the per-relay
+PushNotification is the observability.
+
+Decision note: partial, conscious revisit of the 2026-07-10 "user drives
+loops explicitly" rejection of cron routines — spawning is automated, but
+the user still starts every chain, picks N and the permission mode, and
+holds three kill switches.

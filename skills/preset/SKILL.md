@@ -36,7 +36,7 @@ Steady-state cycle is `pick-up` → work → `wrap-up`; `scope`/`review`/`ship` 
 
 ## Loop bodies
 
-`ticket-loop` and `ci-babysit` are written for the built-in `/loop` runner: `/loop /preset ticket-loop` (self-paced) or `/loop 30m /preset ci-babysit 42`. They also run fine as one-shots. Every loop body honors the same contract: **check state first** (each firing idempotent — never redo finished work), **one unit of work per firing** (the runner re-fires; the preset never chains), **breadcrumbs** where the next firing will look (ticket comment, PR comment), and an **explicit stop signal** when the queue is dry, the checks are green, or a human is needed. `health` is loopable as-is (`/loop 1d /preset health`) — it's naturally idempotent.
+`ticket-loop` and `ci-babysit` are written for the built-in `/loop` runner: `/loop /preset ticket-loop` (self-paced) or `/loop 30m /preset ci-babysit 42`. They also run fine as one-shots. Every loop body honors the same contract: **check state first** (each firing idempotent — never redo finished work), **one unit of work per firing** (the runner re-fires; the preset never chains), **breadcrumbs** where the next firing will look (ticket comment, PR comment), and an **explicit stop signal** when the queue is dry, the checks are green, or a human is needed. `health` is loopable as-is (`/loop 1d /preset health`) — it's naturally idempotent. Long chains: wrap with `/relay` (`/relay 30m N=8 /preset ticket-loop`) — same body, but the loop relays to a fresh session every N firings via a handoff file, so context never rots.
 
 ## Process
 

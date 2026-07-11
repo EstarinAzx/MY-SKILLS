@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-10
+updated: 2026-07-12
 tags: [skill, prompts]
 source: live inspection 2026-06-12
 ---
@@ -18,3 +18,8 @@ Presets live in `~/.claude/skills/preset/presets/`: the session-handoff loop (`i
 Same day, off-loop maintenance pair added: `health` (runs [[ecosystem-audit]] audit.py + template_sync.py + [[llm-kb]] lint --stale across registered vaults → one punch list; only template mirroring may be offered proactively) and `mp-update` (the [[mattpocock-skills-lineup]] update procedure made mechanical: curated list, excluded five, the two local patches, verify, sync).
 
 Same day, loop bodies added — presets written for the built-in `/loop` runner (`/loop [interval] /preset <name>`), each honoring the loop-body contract (state-check first / one unit per firing / breadcrumbs / explicit stop signal): `ticket-loop` (one `ready-for-agent` ticket per firing via [[mattpocock-lifecycle]] `/implement`; consumes the triage labels `/setup-matt-pocock-skills` configures) and `ci-babysit` (PR checks: green→stop, pending→cheap, red→smallest fix or escalate; one action per distinct failure). Rejected: a loop framework skill (`/loop` is the framework) and cron routines (user drives loops explicitly).
+
+2026-07-12: loop bodies gained a wrapper — [[relay]] runs any of them in
+relaying legs (`/relay 30m N=8 /preset ticket-loop`). Amends, not reverses,
+the 2026-07-10 "user drives loops explicitly" note: spawn is automated, the
+user still owns start, N, permission mode, and stop.
