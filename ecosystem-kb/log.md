@@ -4,6 +4,15 @@ type: log
 
 # Log
 
+## [2026-07-12] doc | getclaude page (rediscovered wiring)
+
+User forgot where `getclaude` lives — rediscovered and vaulted: profile
+function (line 1 of the WindowsPowerShell profile on D:) →
+`~/.claude/scripts/getclaude.ps1` → copies `template/IN USE/CLAUDE.md` into
+cwd, `-Force` to overwrite. New [[getclaude]] config page; canonical-edit
+rule recorded (edit the template copy, re-drop with -Force). Exactly the
+archaeology the vault exists to prevent — now it can't be forgotten twice.
+
 ## [2026-07-12] synthesis | harness-engineering page
 
 Named the umbrella: new [[harness-engineering]] synthesis — the

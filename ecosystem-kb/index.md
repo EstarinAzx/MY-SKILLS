@@ -39,6 +39,7 @@ updated: 2026-07-10
 - [[mcp-servers]] — UnityMCP, pencil; skeletongraph removed
 - [[memory-system]] — auto-memory + lineup-memory pattern
 - [[plugin-loading]] — marketplace / directory / skills-dir auto-load paths; deletion = uninstall
+- [[getclaude]] — universal CLAUDE.md dropper: profile function → scripts/getclaude.ps1 → copies template/IN USE/CLAUDE.md into cwd
 
 ## Decisions
 
