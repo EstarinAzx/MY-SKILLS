@@ -55,3 +55,4 @@ updated: 2026-07-10
 ## Syntheses
 
 - [[ecosystem-overview]] — entry point: four layers + decision history + standing rules
+- [[loop-engineering]] — the loop stack: runner (/loop) / lifecycle (relay) / body (presets) / contract; files-not-sessions principle

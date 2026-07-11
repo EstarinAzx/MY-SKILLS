@@ -4,6 +4,15 @@ type: log
 
 # Log
 
+## [2026-07-12] synthesis | loop-engineering page
+
+Named the loop stack as a concept: new [[loop-engineering]] synthesis —
+runner (`/loop`) / lifecycle ([[relay]]) / body ([[preset]] loop bodies) /
+contract, the files-not-sessions principle (stop is pull, not push), the
+composability ladder (one-shot → looped → relayed), and the consolidated
+decision history incl. the bypass-permissions flip. Doc-only sync: page +
+index; no skill changes.
+
 ## [2026-07-12] build | /relay self-relaying loops
 
 Brainstorm build (spec 2026-07-11). New skill `~/.claude/skills/relay/` —
