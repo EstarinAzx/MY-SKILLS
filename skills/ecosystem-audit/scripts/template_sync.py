@@ -31,8 +31,9 @@ from collections import namedtuple
 Finding = namedtuple("Finding", "category location detail")
 
 TEMPLATE_REL = os.path.join("template", "IN USE")
-# .obsidian is per-machine editor state — never meaningful drift
-IGNORED_DIRS = {"__pycache__", ".git", ".obsidian"}
+# .obsidian is per-machine editor state, .claude is session-local state
+# (settings.local.json, relay chain files) — never meaningful drift
+IGNORED_DIRS = {"__pycache__", ".pytest_cache", ".git", ".obsidian", ".claude"}
 IGNORED_SUFFIXES = (".pyc",)
 
 
