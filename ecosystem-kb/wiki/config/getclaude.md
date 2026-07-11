@@ -24,8 +24,11 @@ CLAUDE.md is version-controlled in MY-SKILLS and rides the same
 [[ecosystem-audit]] template mirror as everything else. Edit it THERE, not in
 a project copy; projects get updates by re-running `getclaude -Force`.
 
-Content (9 sections as of 2026-07-12): four behavioral guards (think before
-coding / simplicity first / surgical changes / goal-driven execution), then
-ecosystem wiring — consult [[llm-kb]] ecosystem vault instead of guessing,
-[[context-handoff]] `.context/` convention, `/trace` beginner style, plain
-language when discussing, JS arrow-function preference.
+Content (8 sections as of 2026-07-12 revision): four behavioral guards
+(think before coding / simplicity first / surgical changes / goal-driven
+execution), then ecosystem wiring — consult [[llm-kb]] ecosystem vault
+instead of guessing, [[context-handoff]] handoff via the [[preset]]
+pick-up/wrap-up loop (bare `/context-update` demoted: wrap-up wraps it),
+plain-language-when-discussing (with the `/trace` answer style folded in),
+JS arrow-function preference. Carries a provenance header naming the
+canonical path so project copies aren't edited by mistake.

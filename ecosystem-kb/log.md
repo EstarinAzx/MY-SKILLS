@@ -12,6 +12,11 @@ function (line 1 of the WindowsPowerShell profile on D:) →
 cwd, `-Force` to overwrite. New [[getclaude]] config page; canonical-edit
 rule recorded (edit the template copy, re-drop with -Force). Exactly the
 archaeology the vault exists to prevent — now it can't be forgotten twice.
+Same pass revised the universal CLAUDE.md itself: provenance header (edit
+the canonical copy, not project copies), section 6 rewired to the [[preset]]
+pick-up/wrap-up loop instead of bare `/context-update`, /trace style merged
+into plain-language (9 → 8 sections), "User Preference" renamed
+"JavaScript Style".
 
 ## [2026-07-12] synthesis | harness-engineering page
 
