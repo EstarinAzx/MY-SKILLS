@@ -50,6 +50,7 @@ updated: 2026-07-12
 - [[tdd-lineup]] — 2026-06-11: superpowers TDD sole; local tdd/ deprecated
 - [[commenting-mode-lineup]] — 2026-06-11: elucidate kept, skeleton deleted outright
 - [[mattpocock-skills-lineup]] — 2026-07-10: v1.1.0 curated install; handoff/tdd/code-review/diagnosing-bugs/writing-great-skills excluded
+- [[template-plugins-snapshot]] — 2026-07-13: MY-SKILLS keeps plugin sources (registries + marketplaces), drops plugins/cache (gitlink rot)
 
 ## Sources
 

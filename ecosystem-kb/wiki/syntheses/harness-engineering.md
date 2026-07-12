@@ -40,7 +40,8 @@ inventory.
 - **Session lifecycle** — [[relay]]: the harness deciding when a session
   dies and how its successor is born.
 - **Reproducibility** — `template/IN USE` mirrored to MY-SKILLS; the
-  harness is a repo, not a machine's accident.
+  harness is a repo, not a machine's accident. Scope of the plugin snapshot
+  settled in [[template-plugins-snapshot]]: sources tracked, caches never.
 
 ## The practice
 

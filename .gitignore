@@ -1,0 +1,4 @@
+# plugins/cache is re-derivable from installed_plugins.json + tracked
+# marketplaces — and cache dirs can carry embedded .git repos that commit as
+# broken gitlinks (the 2026-07-13 superpowers 5.1.0 oddity). Never track it.
+plugins/cache/

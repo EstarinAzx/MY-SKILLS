@@ -4,6 +4,17 @@ type: log
 
 # Log
 
+## [2026-07-13] decision | template drops plugins/cache (gitlink rot)
+
+Investigated the recurring ` M plugins/cache/...superpowers/5.1.0` status
+noise in the template repo. Root cause: the 2026-06-11 plugins snapshot
+committed the superpowers cache dir with its embedded `.git` → gitlink
+(160000), dangling on GitHub, unclonable; whole snapshot also frozen at
+5.1.0 vs live 6.1.1 (template_sync only covers skills/ + ecosystem-kb/).
+Decision [[template-plugins-snapshot]]: keep registries + marketplaces
+(rebuildable installs), untrack + .gitignore `plugins/cache/**`; rejected a
+third sync root. Standing ⚠️: registry/marketplace snapshots still manual.
+
 ## [2026-07-13] build | global CLAUDE.md routing sheet
 
 Closed the push/pull gap: skill descriptions route single skills every
