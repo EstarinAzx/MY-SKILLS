@@ -27,3 +27,7 @@ MVD vs built-time flow, two files side by side.
 **Routing:** existing code → [[trace]]; new idea, no code yet → `/hp`. Heavy
 interrogation → [[grill-skills]]. Wired into [[preset]] `init`: drawn after the
 grill, embedded in the PRD before [[github-planning]] hands off.
+
+**Export upgrade** (2026-07-12): [[drawio]] can promote the Mermaid MVD to a
+polished editable PNG/SVG/PDF (CLI ≥v30 converts Mermaid directly). Inline
+Mermaid in `.context/happy-path.md` stays the source of truth.

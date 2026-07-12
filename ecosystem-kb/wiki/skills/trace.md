@@ -17,3 +17,8 @@ Renamed from `read-flow` 2026-06-12; folder is `~/.claude/skills/trace/`.
 draws the intended flow as an MVD *before* code exists; trace reads the *built*
 flow back. `.context/happy-path.md` (design-time) vs `.context/flows.md`
 (built-time) — same project, two files side by side.
+
+**Presentation layer** (2026-07-12): [[drawio]] turns a traced flow into a
+deliverable — `seqlayout.py` renders it as a sequence diagram, the code
+importers draw the static import graph (complement: trace follows one runtime
+flow). `flows.md` stays the source of truth.

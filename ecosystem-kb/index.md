@@ -1,6 +1,6 @@
 ---
 type: index
-updated: 2026-07-10
+updated: 2026-07-12
 ---
 
 # Index
@@ -12,6 +12,7 @@ updated: 2026-07-10
 - [[codex]] — second-opinion/rescue bridge to local Codex CLI (openai/codex-plugin-cc)
 - [[elucidate]] — plain-English commenting mode; sole survivor of commenting consolidation; owns statusline
 - [[ponytail]] — code-minimalism mode (YAGNI/stdlib-first) + review/audit/debt skills; hook+statusline, third such mode (DietrichGebert/ponytail v4.7.0)
+- [[drawio]] — .drawio diagram gen + CLI export; presentation layer over hp/trace Mermaid (Agents365-ai/365-skills, skills-only)
 
 ## Skills
 

@@ -4,6 +4,23 @@ type: log
 
 # Log
 
+## [2026-07-12] install | drawio plugin (365-skills marketplace)
+
+Added marketplace `Agents365-ai/365-skills`, installed plugin `drawio` —
+skill `drawio-skill` v1.28.2 (.drawio XML gen + desktop-CLI export, 28
+scripts: shapesearch/autolayout/code+IaC importers/seqlayout/c4/diff/heatmap
+etc.). Skills-only: no hooks, no MCP — no-hooks rule clean. Assessed fit:
+inline Mermaid in `.context/` stays source of truth for [[happy-path]] /
+[[trace]]; drawio is the presentation/export layer (Mermaid→drawio CLI
+conversion on ≥v30 makes promotion zero-rework; `seqlayout.py` suits traced
+flows). Niche "polished exportable diagram" was vacant — no lineup conflict;
+sibling mermaid/plantuml/excalidraw/tldraw plugins deliberately skipped.
+Deps gap: draw.io CLI + Graphviz not installed (winget `JGraph.Draw` 30.2.6,
+`Graphviz.Graphviz`) — browser-fallback/XML-only until then. No skill edits
+to hp/trace (speculative wiring rejected); pairing documented in [[drawio]],
+cross-linked from both pages. Also fixed [[ecosystem-overview]] layer 1
+staleness: ponytail was missing from the session-modes list.
+
 ## [2026-07-12] doc | getclaude page (rediscovered wiring)
 
 User forgot where `getclaude` lives — rediscovered and vaulted: profile

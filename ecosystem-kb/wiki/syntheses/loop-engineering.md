@@ -6,8 +6,10 @@ tags: [synthesis, loops]
 
 # loop-engineering
 
-How this ecosystem runs recurring, unattended work. Four layers, each owning
-one concern; every layer is swappable without touching the others.
+How this ecosystem runs recurring, unattended work — a subsystem of
+[[harness-engineering]] (the session-lifecycle + contract corner of the
+harness). Four layers, each owning one concern; every layer is swappable
+without touching the others.
 
 | Layer | Owns | Piece |
 |---|---|---|
