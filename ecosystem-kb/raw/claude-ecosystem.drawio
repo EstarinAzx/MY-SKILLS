@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="claude-ecosystem">
+    <mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" page="1" pageWidth="1240" pageHeight="920">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="~/.claude harness — four layers" style="text;html=1;fontSize=20;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="0" width="500" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lane1" value="1 · Session modes — hooks, always-on" style="swimlane;startSize=30;horizontal=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="caveman" value="caveman&#xa;terse output" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="lane1">
+          <mxGeometry x="100" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="elucidate" value="elucidate&#xa;plain-English comments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="lane1">
+          <mxGeometry x="480" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ponytail" value="ponytail&#xa;YAGNI / stdlib-first" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;" vertex="1" parent="lane1">
+          <mxGeometry x="860" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lane2" value="2 · Plugins" style="swimlane;startSize=30;horizontal=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="1160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="superpowers" value="superpowers&#xa;workflow discipline" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="lane2">
+          <mxGeometry x="100" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="codex" value="codex&#xa;second-opinion rescue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="lane2">
+          <mxGeometry x="480" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="drawio" value="drawio ★ new&#xa;diagram export layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="lane2">
+          <mxGeometry x="860" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lane3" value="3 · Standalone skills" style="swimlane;startSize=30;horizontal=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="1160" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="preset" value="preset&#xa;prompt library + loop bodies" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="60" y="40" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="relay" value="relay&#xa;self-relaying loops" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="340" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="hp" value="/hp&#xa;happy-path MVD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="620" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="trace" value="/trace&#xa;flow tracing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="900" y="40" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="llmkb" value="llm-kb&#xa;wiki vaults" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="60" y="120" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="audit" value="ecosystem-audit&#xa;audit + template sync" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="340" y="120" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="mattp" value="mattpocock lifecycle&#xa;spec → tickets → implement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="620" y="120" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="design" value="impeccable family&#xa;design skills" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="lane3">
+          <mxGeometry x="900" y="120" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lane4" value="4 · Infrastructure — files, not sessions" style="swimlane;startSize=30;horizontal=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;html=1;pointerEvents=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="1160" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="vault" value="ecosystem-kb&#xa;vault (this map)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;boundedLbl=1;" vertex="1" parent="lane4">
+          <mxGeometry x="60" y="40" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="template" value="template/IN USE&#xa;→ MY-SKILLS repo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="lane4">
+          <mxGeometry x="340" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mcp" value="MCP servers&#xa;UnityMCP · pencil" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="lane4">
+          <mxGeometry x="620" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="memory" value="auto-memory&#xa;lineup pattern" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="lane4">
+          <mxGeometry x="900" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" value="wraps /loop" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="relay" target="preset">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Mermaid → export" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.35;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="hp" target="drawio">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="seqlayout / flows" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.65;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="trace" target="drawio">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="builds + lints" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="llmkb" target="vault">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="mirrors" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="audit" target="template">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="reconciles" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="audit" target="vault">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

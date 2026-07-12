@@ -24,6 +24,10 @@ CLAUDE.md is version-controlled in MY-SKILLS and rides the same
 [[ecosystem-audit]] template mirror as everything else. Edit it THERE, not in
 a project copy; projects get updates by re-running `getclaude -Force`.
 
+Scope note: this drops the **per-project** CLAUDE.md; the machine-wide
+ecosystem routing sheet is [[global-claude-md]] (`~/.claude/CLAUDE.md`) —
+they stack in getclaude'd projects.
+
 Content (8 sections as of 2026-07-12 revision): four behavioral guards
 (think before coding / simplicity first / surgical changes / goal-driven
 execution), then ecosystem wiring — consult [[llm-kb]] ecosystem vault

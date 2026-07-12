@@ -41,6 +41,7 @@ updated: 2026-07-12
 - [[memory-system]] — auto-memory + lineup-memory pattern
 - [[plugin-loading]] — marketplace / directory / skills-dir auto-load paths; deletion = uninstall
 - [[getclaude]] — universal CLAUDE.md dropper: profile function → scripts/getclaude.ps1 → copies template/IN USE/CLAUDE.md into cwd
+- [[global-claude-md]] — ~/.claude/CLAUDE.md routing sheet, auto-loaded every session: layer map + situation→invoke table + standing rules
 
 ## Decisions
 

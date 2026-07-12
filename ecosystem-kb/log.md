@@ -4,6 +4,18 @@ type: log
 
 # Log
 
+## [2026-07-13] build | global CLAUDE.md routing sheet
+
+Closed the push/pull gap: skill descriptions route single skills every
+session, but chains/pairings/standing-rules lived vault-only (pull). New
+`~/.claude/CLAUDE.md` (user-level memory, auto-loads every session, every
+dir) — 4-layer map, situation→invoke table, standing rules, vault pointer.
+Contract: routing only (~50 lines), vault stays the encyclopedia; division
+vs [[getclaude]] IN USE copy = machine-wide routing vs per-project behavior.
+Sync duty added: lineup changes update the sheet same session. Open
+follow-ups: file unversioned; claude-md-stale-ref lint doesn't cover it.
+New [[global-claude-md]] config page; index updated.
+
 ## [2026-07-12] install | drawio plugin (365-skills marketplace)
 
 Added marketplace `Agents365-ai/365-skills`, installed plugin `drawio` —
