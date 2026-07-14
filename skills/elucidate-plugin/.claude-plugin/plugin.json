@@ -1,0 +1,34 @@
+{
+  "name": "elucidate-local",
+  "description": "ELUCIDATE mode — a lightweight commenting mode that writes code carrying its logic in plain-English comments, sectioned by banner comments. Toggle as a persistent session mode with one axis: default / learner / technical.",
+  "version": "1.0.0",
+  "author": {
+    "name": "EstarinAzx"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/elucidate-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading ELUCIDATE mode..."
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/src/hooks/elucidate-mode-tracker.js\"",
+            "timeout": 5,
+            "statusMessage": "Tracking ELUCIDATE mode..."
+          }
+        ]
+      }
+    ]
+  }
+}
