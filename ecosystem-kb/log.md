@@ -4,6 +4,16 @@ type: log
 
 # Log
 
+## [2026-07-14] curate | template adopts 4 live-only skills
+
+User opted to mirror the standing `live-only` rows into MY-SKILLS:
+elucidate-plugin (skills-dir autoload copy — nested `.git` stripped to avoid
+the [[template-plugins-snapshot]] gitlink rot; template also keeps its own
+root copy), pencil-bridge, screenshot-diff, token-sync. `template_sync.py`
+now reports 0 findings — template mirrors the full live skills lineup.
+Pushed as `9aa068c` (after `187fb4f`, the wayfinder-wiring + mp-flag-flip
+mirror).
+
 ## [2026-07-14] wire | wayfinder routed (sheet row + init fog fork)
 
 Wayfinder was in the ecosystem but chained to nothing — only reachable by
