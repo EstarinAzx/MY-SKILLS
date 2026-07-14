@@ -4,6 +4,27 @@ type: log
 
 # Log
 
+## [2026-07-14] wire | wayfinder routed (sheet row + init fog fork)
+
+Wayfinder was in the ecosystem but chained to nothing — only reachable by
+typing `/wayfinder` or via ask-matt; sole preset mention was mp-update's
+install list. Two wires added: (1) `~/.claude/CLAUDE.md` situation→invoke row
+"Effort too big for one session / needs investigation map → `/wayfinder` →
+to-spec → to-tickets → implement"; (2) [[preset]] init step 5 fog fork —
+grill hits investigation-shaped unknowns (research/spikes/prototypes needed
+before deciding) → offer `/wayfinder`, steps 6–8 wait, funnel re-enters at
+step 6 after the map clears. Synced [[mattpocock-lifecycle]] + [[preset]].
+
+## [2026-07-13] patch | model-invocation enabled on 3 mattpocock skills
+
+`disable-model-invocation: true → false` on grill-with-docs, to-spec,
+to-tickets (user-directed, during Wisp's routing-map `/preset init` run —
+the funnel invokes all three mid-flow and upstream's user-only flag stalled
+it each time). Now a standing local patch: mp-update preset step 5 lists the
+flips for reapply after refresh; noted on [[grill-skills]] +
+[[github-planning]]. Template mirror pending this session's
+`/preset health`.
+
 ## [2026-07-13] decision | template drops plugins/cache (gitlink rot)
 
 Investigated the recurring ` M plugins/cache/...superpowers/5.1.0` status

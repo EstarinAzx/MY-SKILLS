@@ -14,9 +14,10 @@ Install/update **only** these (engineering: to-spec, to-tickets, wayfinder, rese
 2. **Backup + clone.** Copy the current curated folders to `~/.claude/_deprecated/mp-pre-<version>-backup/`. Shallow-clone the repo to the scratchpad.
 3. **Refresh.** For each curated skill: `rm -rf` the live folder, copy the new one (clean replace kills stale aux files). A skill renamed upstream → move the old live folder into the backup and install under the new name.
 4. **New upstream skills** are NOT auto-installed. Evaluate each against the exclusion decision and the one-winner lineup memories; propose install/skip to the user with a one-line reason each.
-5. **Reapply the two local patches** (upstream copies won't have them):
+5. **Reapply the local patches** (upstream copies won't have them):
    - `implement/SKILL.md`: the `/tdd` line becomes "Use the superpowers:test-driven-development skill where possible, at pre-agreed seams."
    - `ask-matt/SKILL.md`: re-add the "**Local ecosystem note:**" blockquote after the `# Ask Matt` heading (routing: /tdd → superpowers TDD, /handoff → /context-update, /code-review → built-in, diagnosing-bugs → superpowers/bugs-begone).
+   - `grill-with-docs/SKILL.md`, `to-spec/SKILL.md`, `to-tickets/SKILL.md`: frontmatter `disable-model-invocation: false` (upstream ships `true`, which stalls the `/preset init` funnel — it invokes all three mid-flow; flipped 2026-07-13).
 6. **Verify.** `grep -rln "/tdd\|/handoff" <curated folders>` — hits outside the two patched files and explainer prose are dangling refs to fix. Then run `/preset health`.
 7. **Bookkeep.** Update ecosystem-kb pages ([[mattpocock-lifecycle]], [[github-planning]], [[grill-skills]], any skill whose page describes changed behavior), append a log.md entry, and update the mattpocock-skills-lineup memory if the lineup itself changed.
 8. **Template.** `python ~/.claude/skills/ecosystem-audit/scripts/template_sync.py --apply`, then commit + push in `template/IN USE/`.

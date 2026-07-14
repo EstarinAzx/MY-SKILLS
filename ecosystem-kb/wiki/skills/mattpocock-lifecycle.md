@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-10
+updated: 2026-07-14
 tags: [skill, planning, lifecycle, mattpocock]
 source: mattpocock/skills v1.1.0, installed 2026-07-10
 ---
@@ -11,7 +11,7 @@ The dev-lifecycle suite from mattpocock/skills v1.1.0 (curated install — see [
 
 User-invoked:
 
-- **wayfinder** — plan work too big for one session as a shared map of investigation tickets on the issue tracker (tracker-native in v1.1.0; four ticket types: decision, task, spike, grilling; fog vs out-of-scope distinction).
+- **wayfinder** — plan work too big for one session as a shared map of investigation tickets on the issue tracker (tracker-native in v1.1.0; four ticket types: decision, task, spike, grilling; fog vs out-of-scope distinction). Routed 2026-07-14: own row in the [[global-claude-md]] routing sheet + fog-fork in [[preset]] init step 5 (grill hits investigation-shaped unknowns → offer wayfinder, funnel resumes after the map clears). Before that it was reachable only by typing `/wayfinder` or via ask-matt.
 - **implement** — build from spec/tickets. Patched locally: drives superpowers TDD (not Matt's `/tdd`) and the built-in code-review skill.
 - **ask-matt** — router over the suite; carries a "Local ecosystem note" mapping excluded skills to our equivalents.
 
