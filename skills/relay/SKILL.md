@@ -66,6 +66,24 @@ binary: claude-wisp          # persisted — keeps using your local gateway wrap
 - [leg 1 / iter 1] one line per firing
 ```
 
+**Prose block is optional (external-state bodies).** The `## Handoff` +
+`## Breadcrumbs` (+ any Gotchas) prose is the cold-reader memory for the next
+leg — and the whole file is re-read into every fresh leg, so it is a recurring
+per-leg context cost. When the body has its **own durable external state**
+(`loop-arg` → `.claude/loop-arg.md`; `ticket-loop` → tracker tickets;
+`ci-babysit` → PR checks + comments), that prose block is pure duplication and
+collapses to a one-line pointer:
+
+```markdown
+## Handoff
+state: .claude/loop-arg.md      # GOAL + NEXT + Log live here
+```
+
+When the body has **no** external store (an ad-hoc prose body like
+`/relay "refactor auth until tests pass"`), the full Done / In-flight / Next /
+Gotchas block is **required** — it is the chain's only cross-leg memory. The
+frontmatter counters never move either way — they are machinery, not memory.
+
 ## Binary resolution (claude-wisp and local gateway wrappers)
 
 When using a wrapper such as `claude-wisp` (your local gateway / model router), relay must consistently spawn legs with the **same binary** that started the chain. Otherwise later legs silently fall back to the real `claude` and bypass your gateway.
@@ -127,8 +145,11 @@ binary: claude-wisp     # or "claude", or any other name on PATH
    stop; cron mode: CronDelete). No spawn. Stopped and orphaned legs die
    here.
 2. **Work.** One unit of the body, exactly as the body prescribes.
-3. **Book-keep.** Increment `iter`; append
-   `- [leg <k> / iter <i>] <one-line summary>` to Breadcrumbs.
+3. **Book-keep.** Increment `iter`. Append a one-line summary where the next
+   leg will read it: `- [leg <k> / iter <i>] <summary>` to `## Breadcrumbs`
+   **for an ad-hoc prose body**; **for an external-state body the body already
+   logs its own progress** (`loop-arg` step 4 appends to `## Log`), so relay
+   keeps no second trail.
 4. **Body signaled done** (queue dry / checks green / human needed) → set
    `stop: true`, rewrite Handoff with the closing state, stop the loop. No
    spawn.
@@ -136,9 +157,12 @@ binary: claude-wisp     # or "claude", or any other name on PATH
 
 ## Relay sequence
 
-1. Rewrite `## Handoff` — Done / In flight / Next / Gotchas, written for a
-   cold reader: the next leg sees only this. Prune Breadcrumbs to the leg
-   just finished. Set `iter: 0`, increment `leg`.
+1. **External-state body** → the `## Handoff` is just the `state:` pointer;
+   there is nothing to rewrite (the body's own store carries Done/Next).
+   **Ad-hoc prose body** → rewrite `## Handoff` (Done / In flight / Next /
+   Gotchas) for a cold reader — the next leg sees only this — and prune
+   `## Breadcrumbs` to the leg just finished. Either way: set `iter: 0`,
+   increment `leg`.
 2. New `leg` > `max_legs` → set `stop: true`, PushNotification
    "relay: <slug> hit max_legs", stop the loop. No spawn.
 3. Spawn the next leg using the **same binary** that was used for this leg (stored in state file under `binary:`).

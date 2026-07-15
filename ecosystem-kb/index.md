@@ -27,7 +27,7 @@ updated: 2026-07-12
 - [[mcp-tooling]] — mcp2cli, unity-mcp-skill, mcp-source
 - [[bugs-begone]] — opt-in instrumented debugging for hard bugs
 - [[output-skill]] — anti-truncation, complete-output enforcement
-- [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn/prompt-writer + maintenance health/mp-update + loop bodies ticket-loop/ci-babysit
+- [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn/prompt-writer + maintenance health/mp-update + loop bodies ticket-loop/ci-babysit/loop-arg (self-prompting)
 - [[relay]] — self-relaying /loop wrapper: legs of N iterations, handoff file, auto-spawned fresh session per leg (kills context rot in long loops)
 - [[teach]] — `/teach <topic>` stateful multi-session teaching workspace → beautiful HTML lessons (added 2026-06-24)
 - [[trace]] — multi-file end-to-end flow tracing (renamed from read-flow 2026-06-12)

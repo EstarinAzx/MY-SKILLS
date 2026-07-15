@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-14
+updated: 2026-07-16
 tags: [skill, prompts]
 source: live inspection 2026-06-12
 ---
@@ -25,3 +25,12 @@ Same day, loop bodies added — presets written for the built-in `/loop` runner 
 relaying legs (`/relay 30m N=8 /preset ticket-loop`). Amends, not reverses,
 the 2026-07-10 "user drives loops explicitly" note: spawn is automated, the
 user still owns start, N, permission mode, and stop.
+
+2026-07-16: third loop body added — `loop-arg`, the self-prompting body.
+Unlike `ticket-loop`/`ci-babysit` its instruction is not fixed: it seeds a
+GOAL into `.claude/loop-arg.md` on the first firing, then each firing does one
+step and overwrites its own `## Next`, stopping when the goal is met. Inversion
+of `ticket-loop` (step 4 rewrites the body's own prompt). Run unattended chains
+under [[relay]] `max_legs`. Paired relay change: the cross-leg prose block
+(Handoff + Breadcrumbs + Gotchas) collapses to a `state:` pointer when a body
+has its own external store — see [[relay]].

@@ -58,3 +58,12 @@ launcher. Wrapper binaries (`wisp` / `.cmd` / `.ps1`) spawn through
 often registers no visible leg. Recommended setup: `$env:CLAUDE_BINARY =
 "claude-wisp"` in the PowerShell profile. Doc-only change to the skill (no new
 kill switch, cap, or fencing).
+
+Prose-block-optional (2026-07-16) — the `## Handoff` + `## Breadcrumbs` +
+Gotchas block is re-read into every leg (per-leg context cost). When the body
+has its own durable external state (`loop-arg` → `.claude/loop-arg.md`,
+`ticket-loop` → tickets, `ci-babysit` → PR), the whole block collapses to a
+one-line `state:` pointer — Breadcrumbs/Gotchas were duplicating the body's own
+trail. Ad-hoc prose bodies keep the full block (their only cross-leg memory).
+Frontmatter counters never move. Paired with the new [[preset]] `loop-arg`
+body.
