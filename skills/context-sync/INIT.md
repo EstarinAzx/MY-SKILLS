@@ -52,12 +52,18 @@ For both modes, use [FILE-TEMPLATES.md](FILE-TEMPLATES.md) as starting points �
 - **Frontmatter:** every file starts with YAML — at minimum `type`, `project`, `updated`. See FILE-TEMPLATES.md.
 - **Wikilinks:** cross-reference handoff files with `[[bare-name]]`. `overview.md` is the MOC — its "Map" section links to every other handoff file so the graph view roots there.
 - **Tags:** add `tags:` in frontmatter for topical files (`auth`, `routing`, `persistence`, etc.) so Obsidian's tag explorer is useful.
+- **Folded categories:** `decisions` and `gotchas` are written as a root index file plus a `[[wikilink]]` list into a sibling entry folder — see [FILE-TEMPLATES.md](FILE-TEMPLATES.md). The index is the wikilink target (`[[decisions]]`), so `overview.md`'s Map links to it unchanged.
 
-### 5. Stub active-work.md and decisions.md
+### 5. Stub active-work.md and the folded indexes
 
 Write `active-work.md` using the schema in [HANDOFF-FORMAT.md](HANDOFF-FORMAT.md), populated with `(no active work yet)` placeholders.
 
-Write `decisions.md` with frontmatter, a header, and an empty body. If `docs/adr/` exists, add a single line: `See \`docs/adr/\` for architectural decision records.`
+`decisions` and `gotchas` are **always folded** (a thin root index + a sibling entry folder). At init:
+
+- Write `decisions.md` as the index template from [FILE-TEMPLATES.md](FILE-TEMPLATES.md) with an **empty** entry list. Do **not** create an empty `decisions/` folder — it is created lazily when the first entry is written on `update`. If `docs/adr/` exists, add the ADR-preference line noted in the template.
+- If the project warrants `gotchas` (almost always does for non-trivial projects), write `gotchas.md` as its index template with an empty list; the `gotchas/` folder is likewise created on first entry.
+
+Entry files (`decisions/<slug>.md`, `gotchas/<slug>.md`) are never written at init — there is nothing to record yet.
 
 ### 6. Confirm
 

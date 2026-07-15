@@ -7,6 +7,10 @@ test — default spawn flag is `--dangerously-skip-permissions`, not
 on the loop skill's own permission prompt at boot. `mode=accept` demoted to
 opt-in for edit-only bodies in pre-allowlisted projects.
 
+Amended 2026-07-15 — spawned legs now use Claude Code's native `--background`
+mode and are managed through `claude agents`; `claude agents` itself is not the
+spawn command because it accepts no initial Relay prompt.
+
 ## Problem
 
 Long-running `/loop` sessions rot. Every firing lands in the same session, so
@@ -21,7 +25,7 @@ exits) — neither can outlive or spawn a session.
 
 `/relay` — a wrapper skill around the built-in `/loop`. It runs the loop in
 **legs** of N iterations. At the end of a leg the session writes a handoff to
-a state file, spawns a fresh Claude session in a new terminal window whose
+a state file, spawns a fresh Claude background session whose
 injected first prompt is the same `/relay` command, and stops its own loop.
 The new leg resumes from the handoff with a near-empty context. The chain
 continues until the work signals done, a stop flag is set, or a leg cap is
@@ -76,7 +80,7 @@ leg: 3          # current leg number
 iter: 2         # iterations done this leg
 max_legs: 20
 stop: false
-spawn_flags: --permission-mode acceptEdits
+spawn_flags: --dangerously-skip-permissions
 ---
 ## Handoff
 (rewritten at each relay: done / in-flight / next unit / gotchas)
@@ -105,13 +109,21 @@ mid-leg); absent or `stop: true` → **init mode** (fresh file, leg 1).
 
 1. Rewrite `## Handoff` (done / in-flight / next unit / gotchas). Prune
    Breadcrumbs to the finished leg. Set `iter: 0`, increment `leg`.
-2. Spawn a new terminal in the same cwd:
-   `start claude --permission-mode acceptEdits "/relay 10m N=8 /preset ticket-loop"`
+2. Spawn a native background agent in the same cwd:
+   ```powershell
+   Start-Process claude -ArgumentList @('--background','--dangerously-skip-permissions','"/relay 10m N=8 /preset ticket-loop"')
+   ```
    (flags come from `spawn_flags`).
-3. `PushNotification`: "relay: leg <k> spawned for <slug>".
-4. Stop own loop (ScheduleWakeup stop / CronDelete). The old window sits idle;
-   the user closes it in passing. (v2 nicety: `wt -w 0 nt` to open a new tab
-   in the same Windows Terminal window instead.)
+3. On successful spawn print exactly:
+   ```text
+   [relay: leg <k> scheduled loop is running in claude agents]
+   ```
+   and `PushNotification`: "relay: leg <k> spawned for <slug>".
+   If spawn fails, set `stop: true`, notify, stop without retry, and do not
+   print the success line.
+4. Stop own loop (ScheduleWakeup stop / CronDelete). The old foreground
+   session only stops its loop and may be closed; the newly spawned background
+   session appears in `claude agents`.
 
 ## Kill switches
 
@@ -126,12 +138,13 @@ Auto-spawn demands these:
 
 ## Permissions — the sharp edge
 
-The spawned session runs unattended; without a flag it stalls forever on the
-first permission prompt. Default `spawn_flags: --permission-mode acceptEdits`;
-overridable at invocation (e.g. `mode=bypass` →
-`--dangerously-skip-permissions`, the user's explicit call per loop). The
-skill doc warns loudly: an allowlist gap means a leg parks silently until the
-user looks at the window.
+The original 2026-07-11 design chose default `spawn_flags: --permission-mode
+acceptEdits` because spawned sessions run unattended. A 2026-07-12 live test
+showed that acceptEdits parked on the loop skill's own permission prompt at
+boot. The current default is `spawn_flags: --dangerously-skip-permissions`;
+`mode=accept` remains opt-in for edit-only bodies in pre-allowlisted projects.
+The skill doc warns loudly about the bypass default, and the user can review
+each background leg through `claude agents`.
 
 ## Accepted failure modes (v1)
 
@@ -167,8 +180,8 @@ amendment on the preset/vault pages, not a reversal.
 ## Success criteria
 
 - A `/relay`-started loop crosses a leg boundary unattended: handoff written,
-  new window opens, new leg resumes the work correctly from the Handoff
-  section alone.
+  new background session appears in claude agents, new leg resumes the work
+  correctly from the Handoff section alone.
 - `/relay stop` halts the chain within one firing.
 - Orphan legs die on their next firing (leg-fencing verified).
 - Plain `/loop` behavior unchanged.

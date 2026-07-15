@@ -26,9 +26,9 @@ Rewrite from scratch using the schema in [HANDOFF-FORMAT.md](HANDOFF-FORMAT.md).
 
 Preserve YAML frontmatter and existing wikilinks when rewriting. Bump `updated:` in frontmatter to today.
 
-### 4. Append to decisions.md — only if warranted
+### 4. Record a decision — only if warranted
 
-Append a new entry ONLY if a load-bearing decision was made this session. A load-bearing decision:
+Append a decision ONLY if a load-bearing decision was made this session. A load-bearing decision:
 
 - Constrains future work ("we picked Zustand over Redux")
 - Closes a path someone might re-propose ("tried server components here, doesn't work because…")
@@ -36,18 +36,13 @@ Append a new entry ONLY if a load-bearing decision was made this session. A load
 
 Skip ephemeral choices and anything obvious from the code.
 
-Format:
+`decisions` is folded, so recording one is three moves:
 
-```
-## YYYY-MM-DD — <short title>
-**Decision:** <what was decided>
-**Why:** <the reason — the constraint or alternative considered>
-**Reversibility:** <easy / hard / one-way>
-```
+1. **Write the entry** `decisions/YYYY-MM-DD-<kebab-title>.md` using the entry template in [FILE-TEMPLATES.md](FILE-TEMPLATES.md) (`Decision` / `Why` / `Reversibility`, plus a `## Related` block that back-links `[[decisions]]`). Create the `decisions/` folder now if this is the first entry.
+2. **Prepend a link line** to `decisions.md` at the top of the list, newest first: `- [[YYYY-MM-DD-<kebab-title>]] — <one-line title>`.
+3. **Bump `updated:`** to today on the index (and the entry carries today already).
 
-If `docs/adr/` exists and the decision warrants an ADR, suggest writing one and reference it from `decisions.md` instead of duplicating.
-
-Bump frontmatter `updated:` to today.
+If `docs/adr/` exists and the decision warrants an ADR, write the ADR and make the `decisions/` entry a one-line pointer to it instead of duplicating.
 
 ### 5. Update structural files only on actual structural change
 
@@ -55,7 +50,7 @@ For `overview.md`, `stack.md`, `api.md`, `frontend.md`, `backend.md`, `code-map.
 
 - Update if this session added / removed / renamed an endpoint, route, page, schema table, store, env var, or major dependency.
 - For `code-map.md` specifically: also re-anchor line citations if a heavily-cited file was edited substantially this session. Line numbers drift; file/function pointers are durable. A targeted refresh (only the citations that moved) beats a full rewrite.
-- For `gotchas.md`: append new traps discovered this session if they're genuinely non-obvious and not already covered by an inline code comment.
+- For `gotchas`: append new traps discovered this session if genuinely non-obvious and not already covered by an inline code comment. `gotchas` is folded — write `gotchas/<kebab-trap>.md` from the entry template (back-linking `[[gotchas]]`), prepend a link line to `gotchas.md`, and bump the index `updated:`. Create the `gotchas/` folder on the first entry.
 - Otherwise leave alone.
 
 When you touch a file:
@@ -67,7 +62,19 @@ When you touch a file:
 
 Don't rewrite these prophylactically. Churn here defeats the point.
 
+### 5b. Migrate a legacy flat file — offer, don't force
+
+If `decisions.md` is still a **flat monolith** (dated `## YYYY-MM-DD — …` blocks in the file, no `decisions/` folder) **and** it is actually long enough to hurt (roughly 10+ entries or past a few hundred lines), offer to fold it:
+
+- Split each `## YYYY-MM-DD — <title>` block into `decisions/<date>-<kebab-title>.md` (entry template; the block body maps onto `Decision`/`Why`/`Reversibility`).
+- Rewrite `decisions.md` as the index: newest-first link list + `## Related → [[overview]]`.
+- Run lint (step 6) afterward to confirm no drift.
+
+Do this only with the user's go-ahead, and never on a small file — a 3-entry `decisions.md` has nothing to fix and stays flat. Migrate `gotchas.md` the same way, splitting on `### <title>` blocks. This is the same "back-fill on touch" spirit as the frontmatter migration in step 5.
+
 ### 6. Report
+
+- **Run lint:** `python "<this skill's dir>\scripts\lint.py" .context` (add `--stale` to also flag pages past 90 days). Surface any `broken-link` / `orphan` / `entry-not-indexed` / `index-dangling` lines in the report so drift is caught the moment it appears. A clean run prints `0 issue(s)`.
 
 Tell the user, briefly:
 

@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-12
+updated: 2026-07-15
 tags: [skill, loops, handoff]
 source: built 2026-07-12; spec skills/docs/superpowers/specs/2026-07-11-relay-design.md
 ---
@@ -11,10 +11,12 @@ Self-relaying loops — `/relay [interval] [N=10] [mode=bypass|accept] <body>`
 wraps the built-in `/loop` so a long loop runs in **legs** of N iterations.
 At each leg boundary the session rewrites the Handoff section of
 `.claude/relay/<slug>.md` (project-local; scratchpad is session-specific),
-spawns a fresh session via `Start-Process claude` with the same `/relay`
-command injected as first prompt, and stops its own loop. Fresh leg =
-startup hooks + skill + handoff only — context rot and uncached full-history
-re-reads (5-min cache TTL) reset every leg.
+spawns a fresh background session via `Start-Process claude` with
+`--background` and the same `/relay` command injected as its first prompt, then
+stops its own loop. The leg is visible and manageable through `claude agents`;
+that command opens the manager and is not itself used to spawn the prompted
+leg. Fresh leg = startup hooks + skill + handoff only — context rot and
+uncached full-history re-reads (5-min cache TTL) reset every leg.
 
 Layering: relay owns state file + counting + handoff + spawn; `/loop` owns
 scheduling; the body (usually a [[preset]] loop body) owns the work and its
@@ -26,7 +28,9 @@ PushNotification, and leg-fencing (a firing whose session leg ≠ file leg
 dies silently — orphans self-terminate). Body-signaled done also sets
 `stop: true`, so a finished chain never respawns; re-running the same
 command revives a mid-leg crash (resume matches on the `body:` field, not
-re-derived slug).
+re-derived slug). After a successful spawn, the old leg ends with
+`[relay: leg <k> scheduled loop is running in claude agents]`; spawn failures
+set `stop: true`, notify, and never print that success line.
 
 Sharp edge: spawned legs run unattended — default spawn flag is
 `--dangerously-skip-permissions`, flipped from the spec's `acceptEdits`

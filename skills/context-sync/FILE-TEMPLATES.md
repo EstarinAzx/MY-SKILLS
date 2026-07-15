@@ -10,7 +10,7 @@ Every handoff file starts with YAML frontmatter so Obsidian indexes it cleanly:
 
 ```
 ---
-type: overview | stack | active-work | decisions | api | frontend | backend | gotchas | code-map | history
+type: overview | stack | active-work | decisions-index | decision | api | frontend | backend | gotchas-index | gotcha | code-map | history
 project: <project-name>
 updated: YYYY-MM-DD
 tags: [context, <topic1>, <topic2>]
@@ -182,11 +182,18 @@ tags: [context, backend]
 - [[gotchas]] — non-obvious traps in business logic
 ```
 
-## decisions.md (initial)
+## decisions.md (folded index) + decisions/ entries
+
+`decisions` is a **folded category**: a thin index at the root plus one file per
+decision in `decisions/`. The index lists newest-first `[[wikilinks]]`; content
+lives in the entries. This keeps the index scannable no matter how many
+decisions accumulate.
+
+**Index — `decisions.md`:**
 
 ```
 ---
-type: decisions
+type: decisions-index
 project: <name>
 updated: YYYY-MM-DD
 tags: [context, decisions]
@@ -194,32 +201,57 @@ tags: [context, decisions]
 
 # Decisions
 
-Settled questions. Append-only. Each entry is dated.
+Settled questions. One file per decision in `decisions/`. Newest first.
 
-If `docs/adr/` exists, prefer ADRs over entries here for substantial architectural decisions — link to them from this file.
+<!-- one line per entry, newest at top -->
+- [[2026-07-15-lift-hardcoded-16k]] — lift the hardcoded 16K Anthropic output cap
 
 ## Related
 
 - [[overview]]
-
----
 ```
 
-## gotchas.md (optional but high-value)
+At `init` the list is empty (folder created lazily on the first entry). If
+`docs/adr/` exists, add a line under the intro: `For substantial architectural
+decisions prefer an ADR in `docs/adr/` and link it from an entry here.`
 
-Non-obvious traps that will burn time if you don't know them. Group by area (build, UI, providers, persistence, etc.).
-
-For each gotcha:
-
-- **The trap** — what looks normal but isn't
-- **Why** — root cause or constraint
-- **Workaround / rule** — what to do or not do
-
-Skip anything obvious from reading the code. Skip anything covered by a comment in the code (the comment is doing the job). The right content here is institutional memory: "this looks wrong but is actually load-bearing because..." or "we tried X and it failed because Y."
+**Entry — `decisions/YYYY-MM-DD-<kebab-title>.md`:**
 
 ```
 ---
-type: gotchas
+type: decision
+project: <name>
+updated: YYYY-MM-DD
+tags: [context, decisions, <topic>]
+---
+
+# <short title>
+
+**Decision:** <what was decided>
+**Why:** <the constraint or alternative considered>
+**Reversibility:** easy | hard | one-way
+
+## Related
+
+- [[decisions]] — index
+- [[<other entry or handoff file>]]
+```
+
+Slug rule: `YYYY-MM-DD-<kebab-title>.md` — the date prefix sorts entries
+chronologically on disk; the kebab title is a unique, readable wikilink
+basename. The `[[decisions]]` back-link keeps the entry non-orphan.
+
+## gotchas.md (folded index) + gotchas/ entries (optional but high-value)
+
+`gotchas` folds the same way as `decisions`, but entries are not chronological,
+so slugs carry no date. Each entry is one trap: what looks normal but isn't, why
+it's load-bearing, and the rule to follow.
+
+**Index — `gotchas.md`:**
+
+```
+---
+type: gotchas-index
 project: <name>
 updated: YYYY-MM-DD
 tags: [context, gotchas]
@@ -227,17 +259,39 @@ tags: [context, gotchas]
 
 # Gotchas
 
-### Don't re-add model validation for Anthropic providers
+Non-obvious traps. One file per trap in `gotchas/`. Group under area headings if
+it helps; a flat list is fine.
 
-`sanitizeProfile()` in `src/utils/providerProfiles.ts` allows empty model fields for Anthropic providers. This is **load-bearing** — it enables the "Subscription default" feature where the model resolves dynamically based on the user's subscription tier.
-
-If you re-add validation that requires a model string for Anthropic, subscription-default users will be locked out.
+- [[anthropic-empty-model-load-bearing]] — empty model field is required for Anthropic
 
 ## Related
 
-- [[code-map]] — where the load-bearing functions live
-- [[backend]] — context for the auth/provider flow
+- [[overview]]
 ```
+
+**Entry — `gotchas/<kebab-trap>.md`:**
+
+```
+---
+type: gotcha
+project: <name>
+updated: YYYY-MM-DD
+tags: [context, gotchas, <area>]
+---
+
+# <short trap name>
+
+**The trap:** <what looks normal but isn't>
+**Why:** <root cause / constraint>
+**Rule:** <what to do or not do>
+
+## Related
+
+- [[gotchas]] — index
+- [[code-map]] — where the load-bearing code lives
+```
+
+Skip anything obvious from the code or already covered by an inline comment.
 
 ## code-map.md (optional, for codebases with split logic ownership)
 

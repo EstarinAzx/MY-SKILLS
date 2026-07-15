@@ -4,6 +4,34 @@ type: log
 
 # Log
 
+## [2026-07-15] build | context-sync folder-fold upgrade
+
+[[context-handoff]]'s two append-only files now fold into a **thin index +
+entry folder** (llm-kb's shape, borrowed): `decisions.md`/`gotchas.md` become
+newest-first link indexes over `decisions/`·`gotchas/` one-file-per-entry
+folders — killing the `decisions.md` 2000-line wall. Index is the wikilink
+target so `overview.md` is unchanged; entries back-link their index (never
+orphans); `history.md` and all bounded files stay flat. New
+`scripts/lint.py` — a **self-contained** stdlib health check (broken-link /
+orphan / entry-not-indexed / index-dangling / `--stale`), deliberately NOT
+coupled to llm-kb's scripts so context-sync installs standalone; 7 unit tests
+green. Search dropped as overkill at ~a dozen files. Legacy flat `.context/`
+migrates on the `/context-update` path — offered when bloated, never forced.
+Brainstorm→spec→plan→build inline (superpowers); design + plan in
+`skills/context-sync/design/`. FF-merged to main (with the finished relay
+commits). Mirrored into `template/IN USE` (context-sync + relay → 0 drift).
+Synced [[context-handoff]]; `/preset health` gates the template push.
+
+## [2026-07-15] update | relay legs move to native background agents
+
+[[relay]] now dispatches each new leg with `Start-Process claude` plus
+`--background`, keeping the reconstructed `/relay` command as the initial
+prompt and the target project as cwd. `claude agents` is the inspection and
+management surface, not the spawn command. Successful old legs end with
+`[relay: leg <k> scheduled loop is running in claude agents]`; spawn failures
+set `stop: true`, notify, and omit that success line. State, fencing, caps,
+permission modes, and no-watchdog policy remain unchanged. Synced [[relay]].
+
 ## [2026-07-14] curate | template adopts 4 live-only skills
 
 User opted to mirror the standing `live-only` rows into MY-SKILLS:

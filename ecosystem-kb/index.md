@@ -19,7 +19,7 @@ updated: 2026-07-12
 - [[design-skills]] — impeccable-led frontend family: redesign, minimalist/brutalist presets, brandkit + imagegen
 - [[design-pipeline]] — pencil→code: pencil-bridge + token-sync + screenshot-diff (gives the dormant pencil MCP consumers)
 - [[llm-kb]] — per-topic wiki vaults (built this one); no-hooks hard rule
-- [[context-handoff]] — .context/ per-project handoff: init / update / sync
+- [[context-handoff]] — .context/ per-project handoff: init / update / sync; decisions+gotchas folded into index+entry folders + self-contained lint (2026-07-15)
 - [[grill-skills]] — plan stress-testing: grilling (helper), grill-me, grill-with-docs
 - [[github-planning]] — to-spec, to-tickets, triage: plan → spec → tracer-bullet tickets
 - [[mattpocock-lifecycle]] — wayfinder → to-spec → to-tickets → implement suite + research/prototype/domain-modeling/codebase-design (v1.1.0, curated)

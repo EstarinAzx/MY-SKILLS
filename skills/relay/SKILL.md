@@ -7,9 +7,9 @@ description: Self-relaying loops — wraps the built-in /loop so long loops run 
 
 Wrapper around the built-in `/loop`. The loop runs in **legs** of N
 iterations. At a leg boundary the session writes a handoff into the state
-file, spawns a fresh Claude session whose injected first prompt is this same
-`/relay` command, and stops its own loop. A fresh leg's context is just:
-startup hooks + this skill + the handoff.
+file, spawns a fresh Claude background session whose injected first prompt is
+this same `/relay` command, and stops its own loop. The next leg appears in
+`claude agents`; its context is just startup hooks + this skill + the handoff.
 
 Relay adds no scheduling — `/loop` owns that:
 
@@ -99,19 +99,31 @@ spawn_flags: --dangerously-skip-permissions
    just finished. Set `iter: 0`, increment `leg`.
 2. New `leg` > `max_legs` → set `stop: true`, PushNotification
    "relay: <slug> hit max_legs", stop the loop. No spawn.
-3. Spawn the next leg (PowerShell tool, from the project root — the new
-   session must inherit this cwd). Rebuild args from frontmatter
-   (`spawn_flags` + `interval` + `n` + `body`); the quoted final element
-   keeps the /relay command a single argument:
+3. Spawn the next leg as a native background agent (PowerShell tool, from the
+   project root — the new session must inherit this cwd). Rebuild args from
+   frontmatter (`spawn_flags` + `interval` + `n` + `body`); `--background`
+   registers the session in `claude agents`, and the quoted final element keeps
+   the `/relay` command a single prompt argument:
 
    ```powershell
-   Start-Process claude -ArgumentList @('--dangerously-skip-permissions','"/relay 10m N=8 /preset ticket-loop"')
+   Start-Process claude -ArgumentList @('--background','--dangerously-skip-permissions','"/relay 10m N=8 /preset ticket-loop"')
+   ```
+   or if user specified they are using a model routed version of claude use instead:
+   ```powershell
+   Start-Process claude-wisp -ArgumentList @('--background','--dangerously-skip-permissions','"/relay 10m N=8 /preset ticket-loop"')
    ```
 
-4. PushNotification: "relay: leg <k> spawned for <slug>" (load the tool
-   via ToolSearch if deferred).
-5. Stop own loop and tell the user this window is now an idle husk — safe
-   to close.
+4. If spawning fails (`claude` missing from PATH, invalid arguments, or process
+   launch error), PushNotification `"relay: <slug> background spawn failed"`,
+   set `stop: true`, stop the loop, and do not retry. Do not print the success
+   line below.
+5. After a successful spawn, PushNotification
+   `"relay: leg <k> spawned for <slug>"` (load the tool via ToolSearch if
+   deferred), stop own loop, and end the user-facing response with exactly:
+
+   ```text
+   [relay: leg <k> scheduled loop is running in claude agents]
+   ```
 
 ## Kill switches
 
@@ -125,7 +137,8 @@ spawn_flags: --dangerously-skip-permissions
 
 - **Permissions.** The spawned session runs unattended with
   `--dangerously-skip-permissions` by default — anything less parks the
-  leg on its first permission prompt until a human looks at its window
+  background leg on its first permission prompt until a human opens
+  `claude agents`
   (live test 2026-07-12: `acceptEdits` stalled on the loop skill's own
   "Use skill?" prompt). Relay chains therefore carry full-permission risk
   by construction: only relay bodies you would trust to run bypass, and
