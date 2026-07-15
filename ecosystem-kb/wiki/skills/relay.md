@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-15
+updated: 2026-07-16
 tags: [skill, loops, handoff]
 source: built 2026-07-12; spec skills/docs/superpowers/specs/2026-07-11-relay-design.md
 ---
@@ -46,3 +46,15 @@ Decision note: partial, conscious revisit of the 2026-07-10 "user drives
 loops explicitly" rejection of cron routines — spawning is automated, but
 the user still starts every chain, picks N and the permission mode, and
 holds three kill switches.
+
+Binary resolution (2026-07-16) — legs must respawn with the **same** launcher
+that started the chain, or a claude-wisp / local-gateway wrapper silently
+drops to the real `claude` and bypasses the router. A new `binary:` state
+field is resolved once (first-match wins: stored `binary:` → `$env:CLAUDE_BINARY`
+→ "wisp"-in-command-line/env autodetect → default `claude`) and persisted, so
+resumes and every future leg reuse it; edit the field to force a different
+launcher. Wrapper binaries (`wisp` / `.cmd` / `.ps1`) spawn through
+`cmd.exe /c` — direct `Start-Process claude-wisp --background` is flaky and
+often registers no visible leg. Recommended setup: `$env:CLAUDE_BINARY =
+"claude-wisp"` in the PowerShell profile. Doc-only change to the skill (no new
+kill switch, cap, or fencing).

@@ -4,7 +4,20 @@ type: log
 
 # Log
 
-## [2026-07-15] build | context-sync folder-fold upgrade
+## [2026-07-16] update | relay gains binary resolution (claude-wisp support)
+
+[[relay]] now tracks which launcher started the chain so every leg respawns
+with the **same binary** — a `claude-wisp` / local-gateway wrapper otherwise
+silently falls back to the real `claude` and bypasses the router. New `binary:`
+state field, resolved once (stored value → `$env:CLAUDE_BINARY` →
+"wisp"-in-command-line autodetect → default `claude`) and persisted for resumes
+and future legs. Wrapper binaries (`wisp` / `.cmd` / `.ps1`) spawn through
+`cmd.exe /c` because direct `Start-Process claude-wisp --background` is flaky
+and often registers no visible leg; the spawn block also now rebuilds the full
+`/relay` command string from state instead of a hardcoded example. Doc-only
+change to the skill — no new kill switch, cap, or fencing; state/permission/
+no-watchdog policy unchanged. User-authored edit to live `skills/relay/SKILL.md`;
+mirrored into `template/IN USE` (0 drift) and synced [[relay]].
 
 [[context-handoff]]'s two append-only files now fold into a **thin index +
 entry folder** (llm-kb's shape, borrowed): `decisions.md`/`gotchas.md` become

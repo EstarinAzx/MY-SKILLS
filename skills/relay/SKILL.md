@@ -31,6 +31,10 @@ Relay adds no scheduling — `/loop` owns that:
 - `mode` — spawn permission flag: `bypass` (default) → `--dangerously-skip-permissions`; `accept` → `--permission-mode acceptEdits`. Bypass is the default because a spawned leg is unattended and `acceptEdits` parks on its first Skill/shell permission prompt (verified live 2026-07-12); use `accept` only when the body is edit-only and the project has the needed allowlist entries.
 - `<body>` — any loop body. The loop-body contract (state-check first / one unit per firing / breadcrumbs / explicit stop signal) applies unchanged.
 
+**claude-wisp / gateway wrapper support:** Relay now properly tracks and re-uses the exact binary (plain `claude` vs your wrapper `claude-wisp`). See "Binary resolution" below. Recommended: set `CLAUDE_BINARY=claude-wisp` in your environment.
+
+**claude-wisp / local gateway support:** Relay now honors `CLAUDE_BINARY` (or auto-detects). Set `CLAUDE_BINARY=claude-wisp` in your environment when using the wrapper so legs keep spawning the same binary. The chosen binary is persisted in the state file.
+
 Example: `/relay 10m N=8 /preset ticket-loop`
 
 ## State file
@@ -50,6 +54,7 @@ iter: 0
 max_legs: 20
 stop: false
 spawn_flags: --dangerously-skip-permissions
+binary: claude-wisp          # persisted — keeps using your local gateway wrapper
 ---
 
 ## Handoff
@@ -59,6 +64,37 @@ spawn_flags: --dangerously-skip-permissions
 ## Breadcrumbs
 
 - [leg 1 / iter 1] one line per firing
+```
+
+## Binary resolution (claude-wisp and local gateway wrappers)
+
+When using a wrapper such as `claude-wisp` (your local gateway / model router), relay must consistently spawn legs with the **same binary** that started the chain. Otherwise later legs silently fall back to the real `claude` and bypass your gateway.
+
+Resolution order (first match wins):
+
+1. `binary:` value already stored in the relay state file (`.claude/relay/<slug>.md`).
+2. `$env:CLAUDE_BINARY` environment variable.
+3. Auto-detection: if the current process/command line contains "wisp", or certain wrapper-specific environment variables are present, use `claude-wisp`.
+4. Default: `claude`.
+
+The chosen binary is immediately written back into the state file under `binary:`. This guarantees that:
+- resumes use the same binary,
+- the next leg (when `iter == n`) is spawned with the same binary,
+- you can force a different launcher by editing the state file directly.
+
+**Recommended setup (claude-wisp users)**
+
+```powershell
+# Put this in your PowerShell profile or session startup
+$env:CLAUDE_BINARY = "claude-wisp"
+```
+
+After that, normal `/relay` usage will automatically use `claude-wisp` for the entire chain.
+
+You can also override per-relay by editing the state file:
+
+```yaml
+binary: claude-wisp     # or "claude", or any other name on PATH
 ```
 
 ## Boot — every /relay invocation
@@ -74,8 +110,14 @@ spawn_flags: --dangerously-skip-permissions
      chain that died mid-leg.
    - No match, or the match has `stop: true` → **init**: write a fresh
      state file (`leg: 1, iter: 0`), frontmatter from the invocation args.
-3. Remember this session's own leg number (the file's `leg` at boot).
-4. Start the loop: follow the built-in `/loop` skill with the given
+3. **Determine binary for this leg and future legs** (critical for claude-wisp users):
+   - If the state file already has a `binary:` field, use it.
+   - Else if `$env:CLAUDE_BINARY` is set, use that value.
+   - Else try to detect: if the current process / command line contains "wisp" (or certain wisp-specific env vars are present), use `claude-wisp`.
+   - Otherwise default to `claude`.
+   - Persist the chosen binary into the state file as `binary: <name>` so every future leg (including after resume) uses exactly the same launcher. This is how relay works reliably with your local gateway wrapper.
+4. Remember this session's own leg number (the file's `leg` at boot).
+5. Start the loop: follow the built-in `/loop` skill with the given
    interval and the per-firing contract below wrapped around the body.
 
 ## Per-firing contract
@@ -99,19 +141,40 @@ spawn_flags: --dangerously-skip-permissions
    just finished. Set `iter: 0`, increment `leg`.
 2. New `leg` > `max_legs` → set `stop: true`, PushNotification
    "relay: <slug> hit max_legs", stop the loop. No spawn.
-3. Spawn the next leg as a native background agent (PowerShell tool, from the
-   project root — the new session must inherit this cwd). Rebuild args from
-   frontmatter (`spawn_flags` + `interval` + `n` + `body`); `--background`
-   registers the session in `claude agents`, and the quoted final element keeps
-   the `/relay` command a single prompt argument:
+3. Spawn the next leg using the **same binary** that was used for this leg (stored in state file under `binary:`).
+
+   For script-based wrappers (claude-wisp.cmd, .ps1, etc.), we go through `cmd.exe /c` because direct `Start-Process` on the wrapper frequently fails to properly launch a background agent.
 
    ```powershell
-   Start-Process claude -ArgumentList @('--background','--dangerously-skip-permissions','"/relay 10m N=8 /preset ticket-loop"')
+   $binary = if ($state.binary) { $state.binary } else { "claude" }
+
+   # Rebuild the full /relay command string from the state
+   $relayCmd = "/relay"
+   if ($state.interval) { $relayCmd += " $($state.interval)" }
+   $relayCmd += " N=$($state.n)"
+   if ($state.spawn_flags) { $relayCmd += " $($state.spawn_flags)" }
+   $relayCmd += " $($state.body)"
+
+   if ($binary -match 'wisp|wrapper|\.cmd$|\.ps1$') {
+       # Use cmd.exe wrapper for npm-style / script launchers.
+       # This is significantly more reliable for --background.
+       Start-Process cmd -ArgumentList @(
+           '/c',
+           $binary,
+           '--background',
+           '--dangerously-skip-permissions',
+           "`"$relayCmd`""
+       ) -WindowStyle Hidden
+   } else {
+       Start-Process $binary -ArgumentList @(
+           '--background',
+           '--dangerously-skip-permissions',
+           "`"$relayCmd`""
+       ) -WindowStyle Hidden
+   }
    ```
-   or if user specified they are using a model routed version of claude use instead:
-   ```powershell
-   Start-Process claude-wisp -ArgumentList @('--background','--dangerously-skip-permissions','"/relay 10m N=8 /preset ticket-loop"')
-   ```
+
+   This is the reliable spawn path for `claude-wisp` (your local gateway wrapper). Direct `Start-Process claude-wisp` often does not register a visible background leg.
 
 4. If spawning fails (`claude` missing from PATH, invalid arguments, or process
    launch error), PushNotification `"relay: <slug> background spawn failed"`,
@@ -148,3 +211,12 @@ spawn_flags: --dangerously-skip-permissions
   observability. Re-running the same /relay command revives the chain.
 - **Spawn failure** (claude not on PATH, etc.) → PushNotification, set
   `stop: true`, no retry.
+
+- **claude-wisp / wrapper binaries + `--background`**
+  Direct `Start-Process claude-wisp` (or `claude-wisp.cmd`) is flaky for background agents.
+  The skill now forces wrappers through `cmd.exe /c`:
+  ```powershell
+  Start-Process cmd -ArgumentList @('/c', $binary, '--background', '--dangerously-skip-permissions', "`"$relayCmd`"") -WindowStyle Hidden
+  ```
+  This is the only reliable way we've seen so far to get a proper background leg when using a local gateway wrapper.
+  If a leg still doesn't appear in `claude agents`, check that the wrapper actually launched something (look for recent `claude.exe` processes with the relay command).
