@@ -102,6 +102,9 @@ The chosen binary is immediately written back into the state file under `binary:
 
 **Recommended setup (claude-wisp users)**
 
+> wisp-router ≥ 2.0.8: the `claude-wisp` launcher sets `CLAUDE_BINARY=claude-wisp` on the
+> spawned session itself, so this profile export is only needed on older versions.
+
 ```powershell
 # Put this in your PowerShell profile or session startup
 $env:CLAUDE_BINARY = "claude-wisp"

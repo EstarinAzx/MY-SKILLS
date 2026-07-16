@@ -4,6 +4,19 @@ type: log
 
 # Log
 
+## [2026-07-17] add | slot skill (Wisp #110)
+
+New personal skill [[slot]] — Claude Code drives its own Wisp routing:
+snapshot → lease → rebind Slot family → spawn Agent via family word →
+hold until agents finish → guarded restore. Built TDD-style (baseline
+early-restore failure observed, countered, 3/3 re-tests green); verified live
+end-to-end through a bridged claude-wisp session (serve log:
+`route family 'claude-haiku-4-5…' -> codex model=gpt-5.6-terra`). Two gaps
+found live and fixed: checkout path hardcoded (no filesystem hunting), lease
+path made absolute (a run wrote it cwd-relative). Accidental TUI open during
+the hunt rewrote all family routes to anthropic — repaired same session.
+Vault + routing sheet synced.
+
 ## [2026-07-16] update | relay gains binary resolution (claude-wisp support)
 
 [[relay]] now tracks which launcher started the chain so every leg respawns
