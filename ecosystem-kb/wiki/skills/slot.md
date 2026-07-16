@@ -16,7 +16,10 @@ stale lease = explicit recovery, crash cleanup is best-effort by design).
 
 Iron rule: the Bridge resolves routing per request, so early restore silently
 reroutes a live agent — a returned task id proves launch, not completion.
-Aliases never work as Agent model values; family words only. `wisp routing`
+Aliases never work as Agent model values; family words only. Spawn labels the
+agent's `description` with the real backend (`<target model>: <task>`, e.g.
+`gpt-5.6-sol: reply with one`) since the family word misleads in the UI
+(added 2026-07-17 after live runs). `wisp routing`
 needs wisp-router > 2.0.10 — older global → run the source entry
 (`bun packages/tui/src/index.tsx routing …`) from the hardcoded checkout
 `D:/.claude/claude projects/autocomplete_extension` (never search for it; a
