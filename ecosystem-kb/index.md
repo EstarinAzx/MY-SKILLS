@@ -33,7 +33,7 @@ updated: 2026-07-12
 - [[trace]] — multi-file end-to-end flow tracing (renamed from read-flow 2026-06-12)
 - [[happy-path]] — `/hp` forward-design twin of trace: golden-path MVD before code exists; feeds `/preset init` (built 2026-06-21)
 - [[ecosystem-audit]] — meta self-maintenance: skills/ ↔ vault reconciler + skills-dir footgun linter + template_sync.py live↔template drift/mirror
-- [[slot]] — Wisp Slot dance: rebind sacrificial family → spawn Agent → restore; lease at ~/.claude/slot/
+- [[slot]] — Wisp Slot dance: rebind sacrificial family → spawn Agent → restore; lease at ~/.claude/slot/; ships as wisp-slot plugin (local marketplace, personal copy retired) + session-awareness hook/badge; plain rebinds fast-path (no checklist)
 
 ## Config
 

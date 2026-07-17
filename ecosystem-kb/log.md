@@ -4,6 +4,24 @@ type: log
 
 # Log
 
+## [2026-07-17] update | slot goes plugin-only + session-awareness (Wisp #124)
+
+[[slot]] delivery flipped: personal skills-dir copy retired to
+`_deprecated/`, the `wisp-slot@wisp-router` plugin (local directory marketplace
+= the Wisp checkout) is now the one copy on this machine. Plugin grew
+session-awareness (Wisp #124, v1.1.0): SessionStart hook announcing the Bridge
+(routing snapshot, headless CLI cheat sheet, stale-lease warning; silent
+unbridged) + node statusline badge (`[WISP fable→<model>]` live per refresh,
+`!LEASE` marker) wired into elucidate's composed wrapper at the checkout path.
+Detection = env + Wisp-home (env alone lies — profile trap). Cache gotcha:
+directory marketplaces install a versioned snapshot; repo edits need
+`claude plugin update wisp-slot@wisp-router` (full id — bare name fails).
+Source-checkout fallback for old globals retired (global 2.0.13). Same-day
+follow-ups (v1.1.1): triage fast path — a bare "route X to family Y" ask is one
+`wisp routing set`, no lease/checklist (a live run danced all 9 steps for a
+plain rebind); badge lease marker went ASCII `!LEASE` (wide ⚠ overlapped the
+next cell); badge colored cyan. All pushed to origin. Vault + index synced.
+
 ## [2026-07-17] add | slot skill (Wisp #110)
 
 New personal skill [[slot]] — Claude Code drives its own Wisp routing:

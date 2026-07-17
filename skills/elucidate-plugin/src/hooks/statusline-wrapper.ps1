@@ -9,6 +9,9 @@
 # others. If a plugin is absent, its badge is simply skipped. The elucidate
 # badge shows identity only — its [MODE:…] bracket was dropped 2026-06-21.
 
+# Statusline stdin JSON — captured up front; only the wisp badge consumes it.
+$StatuslineJson = [Console]::In.ReadToEnd()
+
 # Caveman badge — caveman-statusline.ps1 uses `exit`, which would terminate this
 # wrapper if dot-sourced. Run it in a child process instead.
 $Caveman = Join-Path $HOME ".claude\hooks\caveman-statusline.ps1"
@@ -29,4 +32,12 @@ if (Test-Path -LiteralPath $Elucidate) {
 $Ponytail = Join-Path $HOME ".claude\plugins\marketplaces\ponytail\hooks\ponytail-statusline.ps1"
 if (Test-Path -LiteralPath $Ponytail) {
     & powershell -NoProfile -ExecutionPolicy Bypass -File $Ponytail
+}
+
+# Wisp badge — node script from the Wisp repo checkout (stable path; the plugin
+# cache path is per-version). Prints nothing when the session isn't bridged.
+$Wisp = "D:\.claude\claude projects\autocomplete_extension\plugins\slot\statusline\wisp-statusline.js"
+if (Test-Path -LiteralPath $Wisp) {
+    [Console]::Write(" ")
+    $StatuslineJson | & "C:\Program Files\nodejs\node.exe" $Wisp
 }
