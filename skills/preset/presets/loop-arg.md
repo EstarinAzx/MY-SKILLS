@@ -12,6 +12,8 @@ goal: <fixed — set once at seed from the /preset arg, never rewritten>
 stop: false
 ---
 
+Start: read .context/overview.md + active-work.md   <- only if .context/ exists at seed
+
 ## Next
 <the concrete next step written for yourself last firing>
 
@@ -27,7 +29,7 @@ Check state first (the seed guard + goal check make every firing idempotent — 
 
 ## Steps
 
-1. **Seed guard.** `.claude/loop-arg.md` missing → this is firing 1: write `goal:` from the `/preset loop-arg "<goal>"` argument (if the arg is vague, sharpen it into a statement with a checkable done-condition before writing), set `## Next` to the first concrete step, initialize an empty `## Log`, then end the firing. File exists → **ignore the arg** (a relay respawn re-injects the original command; re-seeding would reset GOAL) and read the file.
+1. **Seed guard.** `.claude/loop-arg.md` missing → this is firing 1: write `goal:` from the `/preset loop-arg "<goal>"` argument (if the arg is vague, sharpen it into a statement with a checkable done-condition before writing), set `## Next` to the first concrete step, initialize an empty `## Log`, then end the firing. `.context/` exists at the project root → include the `Start:` pointer line (same pattern as the wrap-up note) so a cold session that opens this file knows where the project backdrop lives; no `.context/` → omit the line. File exists → **ignore the arg** (a relay respawn re-injects the original command; re-seeding would reset GOAL), read the file, and follow its `Start:` pointer if present and this session hasn't read those files yet.
 2. **Goal check.** Read `goal:` and `## Log`. Goal met? → set `stop: true`, append a closing `## Log` line, and signal the loop to stop: dynamic `/loop` → end it (ScheduleWakeup stop); fixed interval → say "goal met, cancel the loop"; under `/relay` → also set the relay state file's `stop: true`. Do NOT rewrite `## Next`. Done.
 3. **Do NEXT.** Execute exactly what `## Next` says — ONE unit of work. Never chain a second step; the runner re-fires.
 4. **Self-prompt.** Decide the next concrete step toward GOAL given what `## Log` now shows, and **overwrite `## Next`** with it. Append one `## Log` line for the step just completed.

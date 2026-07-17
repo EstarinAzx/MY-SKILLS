@@ -1,6 +1,6 @@
 ---
 type: synthesis
-updated: 2026-07-12
+updated: 2026-07-17
 tags: [synthesis, loops]
 ---
 
@@ -24,7 +24,11 @@ without touching the others.
 tickets carry ticket-loop's progress, PR comments carry ci-babysit's,
 `.claude/relay/<slug>.md` carries chain state, `.context/` carries project
 handoff ([[context-handoff]]). Sessions are disposable workers: any layer can
-die — crash, close, cap — and the system resumes from files. Stop is pull,
+die — crash, close, cap — and the system resumes from files. The two stores
+meet at leg boot (2026-07-17): a fresh relay leg rehydrates from
+`.context/overview.md` + `active-work.md` once if the dir exists — the same
+backdrop `pick-up` gets via the wrap-up note's `Start:` pointer, which
+`loop-arg`'s state file now carries too. Stop is pull,
 not push: a leg re-reads its state file every firing and kills itself on
 `stop: true`; nobody has to signal a running session.
 

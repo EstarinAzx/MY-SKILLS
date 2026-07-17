@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-16
+updated: 2026-07-17
 tags: [skill, loops, handoff]
 source: built 2026-07-12; spec skills/docs/superpowers/specs/2026-07-11-relay-design.md
 ---
@@ -67,3 +67,12 @@ one-line `state:` pointer — Breadcrumbs/Gotchas were duplicating the body's ow
 trail. Ad-hoc prose bodies keep the full block (their only cross-leg memory).
 Frontmatter counters never move. Paired with the new [[preset]] `loop-arg`
 body.
+
+Boot rehydration (2026-07-17) — a fresh leg boots with only startup hooks +
+skill + state file, so it lacked the project backdrop `/preset pick-up` gets
+from the wrap-up note's `Start:` pointer. New boot step: `.context/` exists →
+read `overview.md` + `active-work.md` once at boot (never per firing); absent
+→ skip. Same fix on the [[preset]] `loop-arg` state file: seed writes the
+same `Start:` pointer line the wrap-up note uses, so any cold reader of
+`.claude/loop-arg.md` is routed to the backdrop. Closes the misdirection
+where the relay/loop-arg path and the pick-up path rehydrated differently.

@@ -131,14 +131,20 @@ binary: claude-wisp     # or "claude", or any other name on PATH
      chain that died mid-leg.
    - No match, or the match has `stop: true` → **init**: write a fresh
      state file (`leg: 1, iter: 0`), frontmatter from the invocation args.
-3. **Determine binary for this leg and future legs** (critical for claude-wisp users):
+3. **Rehydrate project context.** `.context/` exists at the target project
+   root → read `.context/overview.md` + `active-work.md` once, at boot —
+   never per firing. A fresh leg's context is only startup hooks + this
+   skill + the state file; this step gives it the same backdrop
+   `/preset pick-up` gets from the wrap-up note. No `.context/` → skip
+   silently.
+4. **Determine binary for this leg and future legs** (critical for claude-wisp users):
    - If the state file already has a `binary:` field, use it.
    - Else if `$env:CLAUDE_BINARY` is set, use that value.
    - Else try to detect: if the current process / command line contains "wisp" (or certain wisp-specific env vars are present), use `claude-wisp`.
    - Otherwise default to `claude`.
    - Persist the chosen binary into the state file as `binary: <name>` so every future leg (including after resume) uses exactly the same launcher. This is how relay works reliably with your local gateway wrapper.
-4. Remember this session's own leg number (the file's `leg` at boot).
-5. Start the loop: follow the built-in `/loop` skill with the given
+5. Remember this session's own leg number (the file's `leg` at boot).
+6. Start the loop: follow the built-in `/loop` skill with the given
    interval and the per-firing contract below wrapped around the body.
 
 ## Per-firing contract
