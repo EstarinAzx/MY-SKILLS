@@ -178,8 +178,20 @@ binary: claude-wisp     # or "claude", or any other name on PATH
 
    For script-based wrappers (claude-wisp.cmd, .ps1, etc.), we go through `cmd.exe /c` because direct `Start-Process` on the wrapper frequently fails to properly launch a background agent.
 
+   Always give the spawned leg a **memorable display name** via `-n/--name`, so
+   it is recognisable in `claude agents` / the session picker instead of an
+   opaque auto-title. Convention: `relay·<slug>·leg<k>` where `k` is the leg
+   number being spawned (`$state.leg`, already incremented in step 1). Append
+   the target ticket when the body carries one and it is known.
+
    ```powershell
    $binary = if ($state.binary) { $state.binary } else { "claude" }
+
+   # Memorable name for `claude agents`: prefix + slug + the leg being spawned.
+   $slug = if ($state.slug) { $state.slug }
+           elseif ($statePath) { (Split-Path -Leaf $statePath) -replace '\.md$','' }
+           else { 'relay' }
+   $legName = "relay·$slug·leg$($state.leg)"
 
    # Rebuild the full /relay command string from the state
    $relayCmd = "/relay"
@@ -196,18 +208,20 @@ binary: claude-wisp     # or "claude", or any other name on PATH
            $binary,
            '--background',
            '--dangerously-skip-permissions',
+           '--name', $legName,
            "`"$relayCmd`""
        ) -WindowStyle Hidden
    } else {
        Start-Process $binary -ArgumentList @(
            '--background',
            '--dangerously-skip-permissions',
+           '--name', $legName,
            "`"$relayCmd`""
        ) -WindowStyle Hidden
    }
    ```
 
-   This is the reliable spawn path for `claude-wisp` (your local gateway wrapper). Direct `Start-Process claude-wisp` often does not register a visible background leg.
+   This is the reliable spawn path for `claude-wisp` (your local gateway wrapper). Direct `Start-Process claude-wisp` often does not register a visible background leg. The `--name` makes each leg self-identify in the agents list (e.g. `relay·relay-leg·leg2`).
 
 4. If spawning fails (`claude` missing from PATH, invalid arguments, or process
    launch error), PushNotification `"relay: <slug> background spawn failed"`,
@@ -220,6 +234,49 @@ binary: claude-wisp     # or "claude", or any other name on PATH
    ```text
    [relay: leg <k> scheduled loop is running in claude agents]
    ```
+
+## The relay-leg pattern (recommended composition)
+
+The most efficient way this skill has been run: `/relay N=1 read and follow
+.claude/relay-leg.md` draining a whole spec's tracer-bullet tickets, unattended.
+It is a **composition** of pieces above, each taken to its limit — copy it when a
+batch of tracker tickets needs to be worked one at a time without a human:
+
+- **N=1 — one ticket per leg.** Each leg does exactly one tracer-bullet ticket
+  end-to-end (branch → work → gate → squash-merge → close), then relays. Every
+  leg is cache-fresh for a single unit; no rot accumulates mid-batch.
+- **The body is a file the leg reads,** not inline text: `read and follow
+  .claude/relay-leg.md`. The loop-body contract (pick / idempotency guard / work
+  / gate / wrap-up / stop) lives in that versioned project file, so the `/relay`
+  command and the handoff stay tiny and the body evolves in-repo. This is the
+  files-not-sessions principle applied to the *body* itself.
+- **External-state body → pointer handoff.** Progress lives in the tracker
+  (issues + native dependencies) and `.context/`, so `## Handoff` is the bare
+  `state:` pointer (the prose-block rule above at its limit).
+- **Optional — delegate the grunt via the slot skill (`wisp-slot:slot`), the
+  relay×slot composition.** *A per-body user choice, not a relay or relay-leg
+  default; most bodies just do the work inline.* When a body opts in, a leg
+  becomes a slot *driver*: the leg's own model owns architecture, decomposition,
+  review, and the gate, while the mechanical implementation is delegated to a cheaper
+  Wisp Target (e.g. `xai/grok-4.5`) by temporarily rebinding the `haiku` Slot.
+  Follow the **slot skill's live mechanic — `wisp snapshot <family>` /
+  `wisp snapshot revert <family>`** (wisp-router ≥ 2.0.24). The **Iron Rule**
+  holds inside a leg: restore the Slot only after *every* grunt agent of that
+  leg has finished, and before the gate, so a later crash never strands the
+  route. A serial (N=1) chain can also recover a Slot a dead prior leg left
+  bound by reverting its held snapshot at boot.
+  > **Gotcha:** the retired `~/.claude/slot/lease-<family>.json` files are
+  > **gone** — the snapshot store is the recovery record. A body file that still
+  > names lease files is stale; follow the live slot skill, not the body.
+- **Gateless unattended wrap-up.** The wrap-up eyeball gate is auto-go;
+  `/context-update` runs each leg; `.context/` commits ride main only.
+- **Spec-batch drainer + self-close.** The body's frontier query picks the
+  oldest open, unblocked `ready-for-agent` ticket; body-signaled done
+  (per-firing contract step 4) fires when the queue empties, and the final leg
+  closes the delivered spec. No leg is spawned past an empty queue.
+
+Proven live: claude-wrapper spec #9, legs 1–5 landing tickets #10–#14, every leg
+gate-green, one reviewed grunt per leg, zero human touches.
 
 ## Kill switches
 

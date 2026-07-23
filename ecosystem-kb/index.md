@@ -1,6 +1,6 @@
 ---
 type: index
-updated: 2026-07-12
+updated: 2026-07-23
 ---
 
 # Index
@@ -10,7 +10,7 @@ updated: 2026-07-12
 - [[superpowers]] — workflow discipline: brainstorming, TDD, debugging, verification (claude-plugins-official v5.1.0)
 - [[caveman]] — terse-output mode + cavecrew compressed subagents; hook-activated every session
 - [[codex]] — second-opinion/rescue bridge to local Codex CLI (openai/codex-plugin-cc)
-- [[elucidate]] — plain-English commenting mode; sole survivor of commenting consolidation; owns statusline
+- [[elucidate]] — plain-English commenting mode; **PARKED 2026-07-17** in `_deprecated/` (temporary, reinstall = move back); statusline wrapper relocated to `~/.claude/hooks/`
 - [[ponytail]] — code-minimalism mode (YAGNI/stdlib-first) + review/audit/debt skills; hook+statusline, third such mode (DietrichGebert/ponytail v4.7.0)
 - [[drawio]] — .drawio diagram gen + CLI export; presentation layer over hp/trace Mermaid (Agents365-ai/365-skills, skills-only)
 
@@ -28,12 +28,12 @@ updated: 2026-07-12
 - [[bugs-begone]] — opt-in instrumented debugging for hard bugs
 - [[output-skill]] — anti-truncation, complete-output enforcement
 - [[preset]] — /preset prompt library: handoff loop (init/pick-up/catch-up/scope/review/wrap-up/ship) + off-loop learn/prompt-writer + maintenance health/mp-update + loop bodies ticket-loop/ci-babysit/loop-arg (self-prompting)
-- [[relay]] — self-relaying /loop wrapper: legs of N iterations, handoff file, auto-spawned fresh session per leg (kills context rot in long loops)
+- [[relay]] — self-relaying /loop wrapper: legs of N iterations, handoff file, auto-spawned fresh session per leg (kills context rot in long loops); **relay-leg pattern** (2026-07-23) — N=1 one-ticket-per-leg + file-body + pointer handoff + gateless wrap-up; optional per-body slot-delegated grunt (relay×slot, user choice)
 - [[teach]] — `/teach <topic>` stateful multi-session teaching workspace → beautiful HTML lessons (added 2026-06-24)
 - [[trace]] — multi-file end-to-end flow tracing (renamed from read-flow 2026-06-12)
 - [[happy-path]] — `/hp` forward-design twin of trace: golden-path MVD before code exists; feeds `/preset init` (built 2026-06-21)
 - [[ecosystem-audit]] — meta self-maintenance: skills/ ↔ vault reconciler + skills-dir footgun linter + template_sync.py live↔template drift/mirror
-- [[slot]] — Wisp Slot dance: rebind sacrificial family → spawn Agent → restore; lease at ~/.claude/slot/; ships as wisp-slot plugin (local marketplace, personal copy retired) + session-awareness hook/badge; plain rebinds fast-path (no checklist)
+- [[slot]] — Wisp Slot dance: snapshot family route → rebind → spawn Agent → revert; CLI-native via `wisp snapshot`/`revert` since v1.3.0 (#131, wisp-router ≥2.0.24; lease files gone); ships as wisp-slot plugin (local marketplace, personal copy retired) + session-awareness hook/badge; plain rebinds fast-path (no checklist); parallel per-family Slots (4-Target ceiling)
 
 ## Config
 

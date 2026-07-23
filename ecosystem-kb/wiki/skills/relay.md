@@ -1,6 +1,6 @@
 ---
 type: skill
-updated: 2026-07-17
+updated: 2026-07-23
 tags: [skill, loops, handoff]
 source: built 2026-07-12; spec skills/docs/superpowers/specs/2026-07-11-relay-design.md
 ---
@@ -76,3 +76,15 @@ read `overview.md` + `active-work.md` once at boot (never per firing); absent
 same `Start:` pointer line the wrap-up note uses, so any cold reader of
 `.claude/loop-arg.md` is routed to the backdrop. Closes the misdirection
 where the relay/loop-arg path and the pick-up path rehydrated differently.
+
+relay-leg pattern (2026-07-23) — `/relay N=1 read and follow .claude/relay-leg.md`
+runs one tracer-bullet ticket per leg, external-state (tracker + `.context/`) so
+the Handoff is a bare `state:` pointer, gateless unattended wrap-up, spec-batch
+self-close. **Optionally** — a per-body user choice, *not* a relay default; most
+bodies work inline — a leg can be a [[slot]] *driver*: delegate the mechanical
+impl to a cheap Wisp Target (grok-4.5) via a temporary `haiku` Slot while the
+leg's own model leads and reviews (Iron Rule: restore after every grunt finishes,
+before the gate). That opt-in is the **relay×slot composition**. Proven live
+draining claude-wrapper spec #9 (legs 1–5 → #10–#14), fully unattended, every leg
+gate-green. Full write-up in [[loop-engineering]]. Gotcha for slot-driving
+bodies: use `wisp snapshot` (v1.3.0), not the retired `lease-<family>.json` files.

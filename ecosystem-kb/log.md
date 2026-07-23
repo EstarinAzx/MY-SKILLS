@@ -4,6 +4,69 @@ type: log
 
 # Log
 
+## [2026-07-23] pattern | relay-leg — one-ticket-per-leg + slot-delegated grunt
+
+Captured the most refined use of the loop stack seen so far, from a live run:
+`/relay N=1 read and follow .claude/relay-leg.md` draining a whole spec's
+tracer-bullet tickets, fully unattended. Not a new skill — a **composition** of
+existing pieces, each an existing rule taken to its limit: **N=1** one ticket
+per leg (cache-fresh context per unit); the **body is a versioned file the leg
+reads** (`read and follow .claude/relay-leg.md`), so the loop-body contract
+lives in-repo not in the `/relay` command (files-not-sessions applied to the
+*body*); **external-state** (GitHub issues + native deps + `.context/`) collapses
+the relay Handoff to a one-line `state:` pointer; **gateless unattended wrap-up**
+(`/context-update` per leg, `.context/` on main only); **spec-batch drainer**
+that self-stops on queue-empty and closes the delivered spec. One **optional**
+move — a per-body user choice this run, *not* a relay default: a leg delegated
+its mechanical grunt to a cheap Wisp Target (grok-4.5) via [[slot]] (temporary
+`haiku` Slot; Iron Rule — restore after every grunt finishes, before the gate),
+the leg's own model leading and reviewing. That opt-in is the **relay×slot
+composition** — a relay leg as slot *driver* — which neither [[relay]] nor
+[[slot]] noted before.
+
+Live proof: claude-wrapper spec #9, legs 1–5 landing #10 → #14, every leg
+gate-green (typecheck · tests · build), one reviewed grunt per leg, zero human
+touches. **Gotcha recorded:** a slot-driving body must use the current CLI
+mechanic (`wisp snapshot` / `wisp snapshot revert`, [[slot]] v1.3.0) — the
+retired `lease-<family>.json` files are gone; a stale body file still naming
+leases misleads a cold leg (follow the live skill, not the body). Edits:
+[[loop-engineering]] gains a "relay-leg pattern" section + decision-history line;
+[[relay]] gains a relay×slot composition note; [[index]] relay line + dates
+bumped. Doc-only — no skill/plugin change, no new kill switch or cap.
+
+## [2026-07-18] update | slot gains parallel per-family Slots (wisp-slot 1.2.0)
+
+[[slot]]'s "one lease at a time" limit lifted at user request — subagents can
+now run on several Wisp Targets at once. Single `~/.claude/slot/lease.json` →
+**per-family** `lease-<family>.json`; each family (`haiku`/`sonnet`/`opus`/
+`fable`) is an independent Slot with its own lease, held and restored on its
+own agents' completion. Safe, not reckless: the four family routes resolve
+independently through the Bridge, so the load-bearing invariant (never restore
+under a live agent) is per-family — restoring `haiku` can't disturb a `sonnet`
+agent. The old constraint was mechanical (one lease file = one recovery
+record), reversing design-spec #110 §98's "concurrent leases out of scope" once
+the per-family split gave each Slot its own recovery record. **Hard ceiling: 4
+distinct Targets concurrently** (only 4 family words); agents sharing a Target
+share a family; no queue for a 5th (add if ever hit — ponytail). SKILL.md
+rewrite (step 2 per-family lease check, step 7 parallel hold, new "Running
+Slots in parallel" section, Limits + rationalization rows); `session-start.js`
++ `wisp-statusline.js` glob `lease*.json` (back-compat with legacy singular;
+badge `!LEASE×N`); plugin.json 1.1.2 → **1.2.0**; README updated. Edited the
+Wisp checkout source (`plugins/slot/`), pushed to cache via
+`claude plugin update wisp-slot@wisp-router` — 1.2.0 cache verified identical
+to source. JS logic tested green (temp HOME, 2 fake leases → hook lists both,
+badge `!LEASE×2`/`!LEASE`/none). Live 2-Target E2E deferred (needs Bridge up +
+two credentialed Targets). New decision doc in the Wisp `.context/decisions/`;
+synced [[slot]] + index date.
+
+**Follow-up (1.2.1):** the printed 9-box "Slot Progress" checklist was noise —
+worse under parallel families (reprints per step). SKILL.md now says track the
+steps **silently** (harness task tools, not the transcript), surfacing only
+warnings/spawns/restores. Checklist block removed; step sequence kept as a
+one-line reference above the detailed steps. Bumped 1.2.0 → 1.2.1, plugin
+update verified (checklist gone, "track silently" present). Triage fast-path
+was already checklist-free.
+
 ## [2026-07-17] update | slot goes plugin-only + session-awareness (Wisp #124)
 
 [[slot]] delivery flipped: personal skills-dir copy retired to
@@ -285,3 +348,20 @@ user, not built this session).
 ## [2026-06-21] build | /hp happy-path skill (forward-design twin of trace)
 
 Fourth brainstorm build. New skill `~/.claude/skills/hp/` — `/hp [idea]` draws an MVD (minimum viable diagram): the one success spine of a user journey *before* code exists, the forward-design inverse of [[trace]] (which reads built code inward). Convey-mode menu asked each invoke (`ux+beat` default / `ux` / `system` / `beats`); box modes render Mermaid `flowchart`, persists to `.context/happy-path.md` (one `##` per flow) mirroring trace's flows.md — design-time vs built-time, two files side by side. Core discipline: success spine only, no error/edge forks (red-flagged); ≤2 clarifying Qs, not a grill. Wired into [[preset]] `init` as a step between grill and PRD (init renumbered to 8 steps; PRD embeds the MVD). GREEN application test (clean subagent, recipe-app idea with two planted error-branch temptations) passed 4/4 — resisted both forks, 0 clarifying Qs, correct `ux+beat` semantics, valid Mermaid. Synced [[happy-path]] (new), [[trace]], [[preset]], index, [[ecosystem-overview]]. Skipped the full RED pressure-gauntlet as disproportionate for a personal technique skill (ponytail).
+
+## [2026-07-17] remove | elucidate parked (temporary uninstall, user request)
+
+User-requested temporary uninstall of [[elucidate]] ("don't need it lately,
+will reinstall later") — parked, NOT deprecated; [[commenting-mode-lineup]]
+winner unchanged. Steps: `claude plugin uninstall elucidate-local@elucidate`;
+folder moved intact `~/.claude/skills/elucidate-plugin` →
+`~/.claude/_deprecated/elucidate-plugin` (kills the skills-dir auto-load +
+its SessionStart/UserPromptSubmit hooks); settings.json cleaned
+(enabledPlugins `elucidate@elucidate` + directory-marketplace entry removed).
+Statusline gotcha: the composed wrapper lived INSIDE the plugin folder —
+relocated to neutral `~/.claude/hooks/statusline-wrapper.ps1` and settings
+repointed; elucidate badge referenced by absolute skills path so it
+auto-revives on reinstall. Verified: wrapper renders `[CAVEMAN] [PONYTAIL]`,
+plugin list clean. Reinstall = move folder back to
+`~/.claude/skills/elucidate-plugin`. Synced [[elucidate]],
+[[settings-and-hooks]], index, routing sheet.
